@@ -1,17 +1,20 @@
 import java.util.Properties
 import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
-    id("dev.flutter.flutter-gradle-plugin")
-
+    id("dev.flutter.flutter-gradle-plugin") // MUST be last
 }
 
 val keystoreProperties = Properties()
 val keystorePropertiesFile = rootProject.file("key.properties")
+
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+    println("DEBUG KEYSTORE → $keystoreProperties")
+} else {
+    println("⚠️ WARNING: key.properties file NOT found!")
 }
 
 android {
@@ -30,18 +33,25 @@ android {
 
     signingConfigs {
         create("release") {
-            keyAlias = keystoreProperties["keyAlias"] as String
-            keyPassword = keystoreProperties["keyPassword"] as String
-            storeFile = keystoreProperties["storeFile"]?.let { file(it) }
-            storePassword = keystoreProperties["storePassword"] as String
+
+            // These MUST NOT be null
+            keyAlias = keystoreProperties["keyAlias"]?.toString() ?: ""
+            keyPassword = keystoreProperties["keyPassword"]?.toString() ?: ""
+            storePassword = keystoreProperties["storePassword"]?.toString() ?: ""
+
+            val storeFilePath = keystoreProperties["storeFile"]?.toString()
+
+            storeFile = if (storeFilePath != null) {
+                file(storeFilePath)
+            } else {
+                println("⚠️ storeFile is NULL in key.properties")
+                null
+            }
         }
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.bathao.app"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
         multiDexEnabled = true
         minSdk = 23
         targetSdk = flutter.targetSdkVersion
@@ -51,11 +61,8 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
             isMinifyEnabled = false
             isShrinkResources = false
-            signingConfig = signingConfigs.getByName("debug")
             signingConfig = signingConfigs.getByName("release")
         }
     }
@@ -64,8 +71,7 @@ android {
 flutter {
     source = "../.."
 }
+
 dependencies {
-    // ...
     implementation("com.google.android.material:material:1.11.0")
-    // ...
 }
