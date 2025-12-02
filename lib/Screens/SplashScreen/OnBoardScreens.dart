@@ -21,7 +21,7 @@ class OnBoardScreens extends StatelessWidget {
         children: [
           Obx(
             () => OnBoardPage(
-              imagePath: 'assets/onboardfirts.png', // Add your local image
+              imagePath: 'assets/onboarding_1.png', // Add your local image
               title: '"Where Voices Spark Connections"',
               subtitle:
                   '"Discover meaningful relationships through real-time voice & video calls.""No texts. Just talk. Real feelings start here."',
@@ -34,7 +34,7 @@ class OnBoardScreens extends StatelessWidget {
           ),
           Obx(
             () => OnBoardPage(
-              imagePath: 'assets/onboardsecond.png',
+              imagePath: 'assets/cc.png',
               title: 'Meet. Match. Call. Connect.',
               subtitle:
                   'Experience real connections through voice and video. Let your voice lead the way to something special.',
@@ -47,7 +47,7 @@ class OnBoardScreens extends StatelessWidget {
           ),
           Obx(
             () => OnBoardPage(
-              imagePath: 'assets/onboardthird.png',
+              imagePath: 'assets/onboarding_3.png',
               title: 'Where Voices Spark Real Connections.',
               subtitle:
                   'Find your match, make meaningful conversations, and fall in love through real-time voice and video calling.',

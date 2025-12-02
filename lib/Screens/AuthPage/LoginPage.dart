@@ -34,7 +34,7 @@ class LoginPage extends StatelessWidget {
               right: 0,
               child: Column(
                 children: [
-                  Image.asset('assets/loginCouple.png'),
+                  Image.asset('assets/login_img.png'),
                   Container(
                     height: 400,
                     padding: EdgeInsets.all(20),
