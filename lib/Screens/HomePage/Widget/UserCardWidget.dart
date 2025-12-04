@@ -32,39 +32,52 @@ class UserCard extends StatelessWidget {
     required this.videoRate,
   });
 
+  Color randomColor() {
+    final random = Random();
+    return Color.fromARGB(
+      255,
+      random.nextInt(256),
+      random.nextInt(256),
+      random.nextInt(256),
+    );
+  }
+
+  Color statusColor(String status) {
+    switch (status.toLowerCase()) {
+      case "online":
+        return Colors.green;
+      case "offline":
+        return Colors.red;
+      case "busy":
+        return Colors.yellow;
+      default:
+        return Colors.grey;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    CallController callController = Get.put(CallController());
+    final callController = Get.find<CallController>();
 
-    Color getRandomColor() {
-      final Random random = Random();
-      return Color.fromARGB(
-        255,
-        random.nextInt(256),
-        random.nextInt(256),
-        random.nextInt(256),
-      );
-    }
+    final width = MediaQuery.of(context).size.width;
 
-    Color getStatusColor() {
-      switch (status.toLowerCase()) {
-        case "online":
-          return Colors.green;
-        case "offline":
-          return Colors.red;
-        case "busy":
-          return Colors.yellow;
-        default:
-          return Colors.grey;
-      }
-    }
+    // Small, controlled responsive sizes
+    final avatarRadius = width * 0.08; // slightly smaller
+    final iconSize = width * 0.04;
+    final spacing = width * 0.025;
+    final fontMain = width * 0.040;
+    final fontSub = width * 0.030;
+    final statusDot = width * 0.028;
 
-    final Color statusColor = getStatusColor();
+    final Color statColor = statusColor(status);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+      padding: EdgeInsets.symmetric(
+        horizontal: spacing,
+        vertical: spacing * 0.8,
+      ),
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: EdgeInsets.all(spacing),
         decoration: BoxDecoration(
           color: const Color(0xFF2D2A2A),
           borderRadius: BorderRadius.circular(12),
@@ -72,74 +85,81 @@ class UserCard extends StatelessWidget {
         ),
         child: Row(
           children: [
+            // Avatar + Status
             Stack(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(3),
+                  padding: EdgeInsets.all(width * 0.008),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: statusColor, width: 3),
+                    border: Border.all(color: statColor, width: width * 0.010),
                   ),
                   child: CircleAvatar(
-                    radius: 28,
-                    backgroundColor:
-                        (imageUrl == null) ? getRandomColor() : null,
-                    backgroundImage:
-                        (imageUrl != null)
-                            ? NetworkImage("$baseImageUrl$imageUrl")
-                            : null,
-                    child:
-                        (imageUrl == null)
-                            ? Text(
-                              name.isNotEmpty ? name[0].toUpperCase() : '?',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            )
-                            : null,
+                    radius: avatarRadius,
+                    backgroundColor: imageUrl == null ? randomColor() : null,
+                    backgroundImage: imageUrl != null
+                        ? NetworkImage("$baseImageUrl$imageUrl")
+                        : null,
+                    child: imageUrl == null
+                        ? Text(
+                      name.isNotEmpty ? name[0].toUpperCase() : '?',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: avatarRadius * 0.65,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                        : null,
                   ),
                 ),
+
                 Positioned(
                   top: 2,
                   right: 2,
                   child: Container(
-                    width: 12,
-                    height: 12,
+                    width: statusDot,
+                    height: statusDot,
                     decoration: BoxDecoration(
-                      color: statusColor,
+                      color: statColor,
                       shape: BoxShape.circle,
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(width: 12),
+
+            SizedBox(width: spacing),
+
+            // NAME + GENDER + AGE
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     name,
-                    style: const TextStyle(
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: fontMain,
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
                       color: Colors.white,
                     ),
                   ),
-                  const SizedBox(height: 4),
+
+                  SizedBox(height: spacing * 0.5),
+
                   Row(
                     children: [
                       Icon(
                         gender == "male" ? Icons.person : Icons.face_4,
+                        size: iconSize,
                         color: Colors.white,
-                        size: 18,
                       ),
-                      const SizedBox(width: 4),
+                      SizedBox(width: spacing * 0.4),
                       Text(
                         "$age age",
-                        style: const TextStyle(
+                        style: TextStyle(
+                          fontSize: fontSub,
                           color: Colors.grey,
                           fontWeight: FontWeight.w600,
                         ),
@@ -149,47 +169,54 @@ class UserCard extends StatelessWidget {
                 ],
               ),
             ),
+
+            SizedBox(width: spacing),
+
+            // RIGHT SIDE: Rates + Buttons
             Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
+                // Audio / Video Rate Row
                 Row(
                   children: [
-                    const Icon(Icons.call, color: Colors.greenAccent, size: 18),
-                    const SizedBox(width: 4),
-                    Text(
-                      "$audioRate",
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    const SizedBox(width: 10),
-                    const Icon(
-                      Icons.videocam,
-                      color: Colors.redAccent,
-                      size: 18,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      "$videoRate",
-                      style: const TextStyle(color: Colors.white),
-                    ),
+                    Icon(Icons.call,
+                        color: Colors.greenAccent, size: iconSize),
+                    SizedBox(width: spacing * 0.3),
+                    Text("$audioRate",
+                        style:
+                        TextStyle(color: Colors.white, fontSize: fontSub)),
+
+                    SizedBox(width: spacing),
+
+                    Icon(Icons.videocam,
+                        color: Colors.redAccent, size: iconSize),
+                    SizedBox(width: spacing * 0.3),
+                    Text("$videoRate",
+                        style:
+                        TextStyle(color: Colors.white, fontSize: fontSub)),
                   ],
                 ),
-                const SizedBox(height: 10),
+
+                SizedBox(height: spacing),
+
+                // CALL BUTTONS ROW
                 Row(
                   children: [
                     MyCustomCallButton(
                       userId: userId,
                       name: name,
                       status: status,
-                      isEnabled: callType == "audio" || callType == "both",
+                      isEnabled:
+                      callType == "audio" || callType == "both",
                     ),
-                    const SizedBox(width: 10),
+                    SizedBox(width: spacing),
                     MyCustomCallButton(
                       userId: userId,
                       name: name,
                       status: status,
                       isVideoCall: true,
-                      isEnabled: callType == "video" || callType == "both",
+                      isEnabled:
+                      callType == "video" || callType == "both",
                     ),
                   ],
                 ),

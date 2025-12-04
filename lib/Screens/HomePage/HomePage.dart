@@ -169,102 +169,127 @@ class HomePage extends StatelessWidget {
     controller.getCoin();
     return Scaffold(
       backgroundColor: AppColors.scaffoldColor,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(
-          homeController.showSearchInAppBar.value ? 60 : 180,
-        ),
-        child: Obx(
-          () =>
-              homeController.showSearchInAppBar.value
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(
+            homeController.showSearchInAppBar.value
+                ? MediaQuery.of(context).size.height * 0.10   // ~10%
+                : MediaQuery.of(context).size.height * 0.22,  // ~22%
+          ),
+          child: Obx(
+                () {
+              final screenWidth = MediaQuery.of(context).size.width;
+              final screenHeight = MediaQuery.of(context).size.height;
+
+              final avatarSize = screenWidth * 0.14; // responsive avatar
+              final coinIconSize = screenWidth * 0.06;
+
+              return homeController.showSearchInAppBar.value
                   ? Container(
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFF000D64), Color(0xFF081DAA)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: const BorderRadius.vertical(
-                        bottom: Radius.circular(30),
-                      ),
-                    ),
-                    child: Stack(
+                padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.04,
+                  vertical: screenHeight * 0.015,
+                ),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF000D64), Color(0xFF081DAA)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: const BorderRadius.vertical(
+                    bottom: Radius.circular(30),
+                  ),
+                ),
+                child: Stack(
+                  children: [
+                    // LEFT SIDE — Profile + Greeting
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Row(
-                          children: [
-                            // 👤 Profile image
-                            CircleAvatar(
-                              radius: 25,
-                              backgroundImage: NetworkImage(
-                                userModel!.user!.profilePic == null
-                                    ? "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                    : "$baseImageUrl${userModel!.user!.profilePic!}",
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            // 👋 Greeting
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Hello, ${userModel!.user!.name!}",
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const Text(
-                                  "welcome Bathao",
-                                  style: TextStyle(color: Colors.white70),
-                                ),
-                              ],
-                            ),
-                            // 🪙 Coins
-                          ],
-                        ),
-                        Positioned(
-                          top: 10,
-                          right: 0,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                "Available Coins",
-                                style: TextStyle(color: Colors.white70),
-                              ),
-                              Row(
-                                children: [
-                                  const Icon(Icons.stars, color: Colors.amber),
-                                  const SizedBox(width: 4),
-                                  Obx(
-                                    () => Text(
-                                      totalCoin.value.toString(),
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                        CircleAvatar(
+                          radius: avatarSize / 2,
+                          backgroundImage: NetworkImage(
+                            userModel!.user!.profilePic == null
+                                ? "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80"
+                                : "$baseImageUrl${userModel!.user!.profilePic!}",
                           ),
+                        ),
+                        SizedBox(width: screenWidth * 0.04),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Hello, ${userModel!.user!.name!}",
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: screenWidth * 0.05,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              "welcome Bathao",
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: screenWidth * 0.035,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  )
+
+                    // RIGHT SIDE — Coins
+                    Positioned(
+                      top: 8,
+                      right: 0,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Available Coins",
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: screenWidth * 0.035,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.stars,
+                                color: Colors.amber,
+                                size: coinIconSize,
+                              ),
+                              SizedBox(width: screenWidth * 0.01),
+                              Obx(
+                                    () => Text(
+                                  totalCoin.value.toString(),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: screenWidth * 0.045,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
                   : CustomHomeAppBar(
-                    userName: userModel!.user!.name!,
-                    coinCount: totalCoin,
-                    profileImageUrl:
-                        userModel!.user!.profilePic == null
-                            ? "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                            : "$baseImageUrl${userModel!.user!.profilePic!}",
-                  ),
+                userName: userModel!.user!.name!,
+                coinCount: totalCoin,
+                profileImageUrl: userModel!.user!.profilePic == null
+                    ? "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80"
+                    : "$baseImageUrl${userModel!.user!.profilePic!}",
+              );
+            },
+          ),
         ),
-      ),
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
