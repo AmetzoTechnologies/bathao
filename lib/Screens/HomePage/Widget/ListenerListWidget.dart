@@ -7,7 +7,6 @@ import 'UserCardWidget.dart';
 class ListenerListWidget extends StatelessWidget {
   const ListenerListWidget({super.key});
 
-  // Age calculation moved OUTSIDE build for efficiency
   String getAgeOrNA(DateTime? birthDate) {
     if (birthDate == null) return 'N/A';
 
@@ -31,6 +30,43 @@ class ListenerListWidget extends StatelessWidget {
         if (controller.isLoading && controller.listenerData.isEmpty) {
           return const SliverToBoxAdapter(
             child: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        // Show empty state when no listeners found
+        if (!controller.isLoading && controller.listenerData.isEmpty) {
+          return SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.person_search,
+                    size: 80,
+                    color: Colors.grey[400],
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'No specialists found',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Try selecting different languages or filters',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           );
         }
 

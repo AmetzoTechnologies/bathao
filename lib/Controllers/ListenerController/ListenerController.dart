@@ -17,7 +17,7 @@ class ListenerController extends GetxController {
   bool isLoading = false;
   bool hasMore = true;
   int currentPage = 1; // Start from page 0
-  final int limit = 60;
+  final int limit = 100;
   List langs = [];
 
   final ApiService _apiService = ApiService();
@@ -75,7 +75,7 @@ class ListenerController extends GetxController {
         final newListeners = data.receivers ?? [];
         listenerData.addAll(newListeners);
         if (newListeners.length < limit) {
-          hasMore = false;
+          hasMore = true;
         } else {
           currentPage++;
         }
