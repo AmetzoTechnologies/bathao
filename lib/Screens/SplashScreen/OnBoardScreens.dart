@@ -34,7 +34,7 @@ class OnBoardScreens extends StatelessWidget {
           ),
           Obx(
             () => OnBoardPage(
-              imagePath: 'assets/cc.png',
+              imagePath: 'assets/onboarding_2.png',
               title: 'Meet. Match. Call. Connect.',
               subtitle:
                   'Experience real connections through voice and video. Let your voice lead the way to something special.',
