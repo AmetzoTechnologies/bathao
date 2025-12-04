@@ -64,6 +64,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
+        initialBinding:AppBinding(),
       home: _getInitialPage(),
     );
   }

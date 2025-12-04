@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../Controllers/AuthController/AuthController.dart';
+import '../../Controllers/CallController/CallController.dart';
+import '../../Controllers/HomeController/HomeController.dart';
+import '../../Controllers/ListenerController/ListenerController.dart';
+import '../../Controllers/PaymentController/PaymentController.dart';
 import '../AuthPage/LoginPage.dart';
 import '../HomePage/HomePage.dart';
 import '../UpdateScreen/UpdateScreen.dart';
@@ -54,3 +58,13 @@ class DecideScreen extends StatelessWidget {
     );
   }
 }
+class AppBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(PaymentController(), permanent: true);
+    Get.put(HomeController(), permanent: true);
+    Get.put(CallController(), permanent: true);
+    Get.put(ListenerController(), permanent: true);
+  }
+}
+

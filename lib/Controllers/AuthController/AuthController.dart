@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'call_init_service.dart';
+
 UserDataModel? userModel;
 
 class AuthController extends GetxController {
@@ -90,6 +92,10 @@ class AuthController extends GetxController {
           preferences.setString("token", token!);
           jwsToken = token;
           await getUserData();
+          await initZegoCallService(
+            userId: userModel!.user!.id!,
+            userName: userModel!.user!.name!,
+          );
           Get.offAll(MainPage());
         } else {
           Get.to(

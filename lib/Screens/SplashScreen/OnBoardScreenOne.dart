@@ -21,6 +21,13 @@ class OnBoardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final h = MediaQuery.of(context).size.height;
+
+    // Perfect responsive hero image sizing
+    final desiredHeight = h * 0.70;
+    // Clamp logic = premium feel on Pixel + safe on all screens
+    final imageHeight = desiredHeight.clamp(420.0, 690.0);
+
     return Container(
       height: double.infinity,
       decoration: BoxDecoration(
@@ -34,17 +41,26 @@ class OnBoardPage extends StatelessWidget {
         children: [
           Column(
             children: [
-              SizedBox(height: 60),
-              Image.asset(imagePath, height: 600),
-              Spacer(),
+              SizedBox(height: h * 0.06),
+
+              SizedBox(
+                height: imageHeight,
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.contain,
+                ),
+              ),
+
+              const Spacer(),
             ],
           ),
+
           Positioned(
             bottom: 0,
             left: 0,
             right: 0,
             child: Container(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -54,23 +70,28 @@ class OnBoardPage extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),
-                borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(30),
+                ),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _buildIndicator(isActive: currentPage == 0),
-                      SizedBox(width: 6),
-                      _buildIndicator(isActive: currentPage == 1),
-                      SizedBox(width: 6),
-                      _buildIndicator(isActive: currentPage == 2),
+                      _indicator(currentPage == 0),
+                      const SizedBox(width: 6),
+                      _indicator(currentPage == 1),
+                      const SizedBox(width: 6),
+                      _indicator(currentPage == 2),
                     ],
                   ),
-                  SizedBox(height: 10),
+
+                  const SizedBox(height: 10),
+
                   Text(
                     title,
                     style: TextStyle(
@@ -80,19 +101,24 @@ class OnBoardPage extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 12),
+
+                  const SizedBox(height: 12),
+
                   Text(
                     subtitle,
-                    style: TextStyle(fontSize: 14, color: AppColors.textColor),
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.textColor,
+                    ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 25),
 
-                  // Custom Button
+                  const SizedBox(height: 25),
+
                   GestureDetector(
                     onTap: onTap,
                     child: Container(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 14,
                       ),
@@ -103,28 +129,21 @@ class OnBoardPage extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
+                          const Text(
                             "Get Started",
-                            style: TextStyle(color: Colors.white, fontSize: 22),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                            ),
                           ),
-                          SizedBox(width: 10),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            color: AppColors.textColor,
-                          ),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            color: AppColors.textColor.withOpacity(0.8),
-                          ),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            color: AppColors.textColor.withOpacity(0.6),
-                          ),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            color: AppColors.textColor.withOpacity(0.4),
-                          ),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
+                          Icon(Icons.arrow_forward_ios,
+                              color: AppColors.textColor),
+                          Icon(Icons.arrow_forward_ios,
+                              color: AppColors.textColor.withOpacity(0.8)),
+                          Icon(Icons.arrow_forward_ios,
+                              color: AppColors.textColor.withOpacity(0.6)),
+                          const SizedBox(width: 10),
                           Container(
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
@@ -142,11 +161,9 @@ class OnBoardPage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            padding: EdgeInsets.all(8),
-                            child: Icon(
-                              Icons.arrow_forward_ios,
-                              color: Colors.white,
-                            ),
+                            padding: const EdgeInsets.all(8),
+                            child: const Icon(Icons.arrow_forward_ios,
+                                color: Colors.white),
                           ),
                         ],
                       ),
@@ -161,12 +178,13 @@ class OnBoardPage extends StatelessWidget {
     );
   }
 
-  Widget _buildIndicator({required bool isActive}) {
-    return Container(
-      width: isActive ? 50 : 28,
-      height: isActive ? 6 : 4,
+  Widget _indicator(bool active) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      width: active ? 50 : 28,
+      height: active ? 6 : 4,
       decoration: BoxDecoration(
-        color: isActive ? Colors.white : Colors.white54,
+        color: active ? Colors.white : Colors.white54,
         borderRadius: BorderRadius.circular(3),
       ),
     );
