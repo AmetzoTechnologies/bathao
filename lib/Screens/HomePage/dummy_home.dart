@@ -28,13 +28,24 @@ class DummyHomePage extends StatelessWidget {
   );
   final HomeController homeController = Get.put(HomeController());
 
+  final ScrollController scrollController = ScrollController();
+
 
   @override
   Widget build(BuildContext context) {
     bool hasShownUnavailableDialog = false;
     final callTracker = CallTracker();
 
-
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 200) {
+        // Load more when near bottom
+        final listenerController = Get.find<ListenerController>();
+        if (!listenerController.isLoading && listenerController.hasMore) {
+          listenerController.fetchListeners();
+        }
+      }
+    });
 
     // Your ZegoCloud initialization
     ZegoUIKitPrebuiltCallInvitationService().init(
@@ -352,7 +363,7 @@ class DummyHomePage extends StatelessWidget {
               ),
             ),
           ),
-          const ListenerListWidget(),
+          ListenerListWidget(scrollController: scrollController),
         ],
       ),
     );

@@ -5,7 +5,12 @@ import 'package:get/get.dart';
 import 'UserCardWidget.dart';
 
 class ListenerListWidget extends StatelessWidget {
-  const ListenerListWidget({super.key});
+  final ScrollController? scrollController; // Add this parameter
+
+  const ListenerListWidget({
+    super.key,
+    this.scrollController, // Optional parameter
+  });
 
   String getAgeOrNA(DateTime? birthDate) {
     if (birthDate == null) return 'N/A';
@@ -29,7 +34,12 @@ class ListenerListWidget extends StatelessWidget {
       builder: (controller) {
         if (controller.isLoading && controller.listenerData.isEmpty) {
           return const SliverToBoxAdapter(
-            child: Center(child: CircularProgressIndicator()),
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.all(32.0),
+                child: CircularProgressIndicator(),
+              ),
+            ),
           );
         }
 
@@ -74,6 +84,38 @@ class ListenerListWidget extends StatelessWidget {
           delegate: SliverChildBuilderDelegate(
                 (context, index) {
               final user = controller.listenerData[index];
+
+              // Show loading indicator at the bottom when loading more
+              if (index == controller.listenerData.length - 1 &&
+                  controller.isLoading) {
+                return Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                        bottom: cardSpacing,
+                        left: 16,
+                        right: 16,
+                      ),
+                      child: UserCard(
+                        name: user.displayName ?? "Unknown",
+                        age: getAgeOrNA(user.dateOfBirth),
+                        gender: user.gender ?? "",
+                        imageUrl: user.profilePic,
+                        audioRate: audioRate.value,
+                        videoRate: videoRate.value,
+                        callType: user.callType ?? "",
+                        coins: 3,
+                        status: user.status ?? "",
+                        userId: user.id ?? "",
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: CircularProgressIndicator(),
+                    ),
+                  ],
+                );
+              }
 
               return Padding(
                 padding: EdgeInsets.only(

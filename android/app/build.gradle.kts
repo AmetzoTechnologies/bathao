@@ -53,7 +53,7 @@ android {
     defaultConfig {
         applicationId = "com.bathao.app"
         multiDexEnabled = true
-        minSdk = 23
+        minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
