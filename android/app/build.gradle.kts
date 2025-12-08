@@ -54,10 +54,16 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
 
+            // Enable R8 full mode for maximum optimization
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            // Additional optimizations
+            ndk {
+                debugSymbolLevel = "SYMBOL_TABLE"
+            }
         }
         debug {
             signingConfig = signingConfigs.getByName("debug")
