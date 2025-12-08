@@ -14,6 +14,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
+import '../ListenerController/ListenerController.dart';
+import 'call_init_service.dart';
+
 String? jwsToken;
 
 class RegisterController extends GetxController {
@@ -90,7 +93,14 @@ class RegisterController extends GetxController {
         await prefs.setString('token', model.token!);
         print("Registered successfully");
         await controller.getUserData();
+        Get.find<ListenerController>().refreshListeners();
 
+        // Initialize Zego
+        await initZegoCallService(
+          userId: userModel!.user!.id!,
+          userName: userModel!.user!.name!,
+        );
+        Get.put(ListenerController());
         Get.offAll(MainPage());
       } else {
         print("Failed: ${response.statusCode} ${response.body}");

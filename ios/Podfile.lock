@@ -109,14 +109,14 @@ PODS:
     - Flutter
   - zego_uikit_signaling_plugin (0.0.1):
     - Flutter
-  - zego_zim (2.21.0):
+  - zego_zim (2.23.0):
     - Flutter
-    - ZIM (= 2.21.1)
+    - ZIM (= 2.24.0)
   - zego_zpns (2.6.0):
     - Flutter
     - ZPNs (= 2.6.0)
   - ZegoUIKitReport (0.2.10)
-  - ZIM (2.21.1)
+  - ZIM (2.24.0)
   - ZIPFoundation (0.9.20)
   - ZPNs (2.6.0)
 
@@ -274,10 +274,10 @@ SPEC CHECKSUMS:
   zego_uikit: 28f61eb07f723dca45f8b076e39f423738fe1ccd
   zego_uikit_prebuilt_call: 4d515df426dc50a81eb9263dd084bb3ea5a63813
   zego_uikit_signaling_plugin: 7fdfcd9f796b591c9cb8770609f4fa85178aa40e
-  zego_zim: 8ccf70c52c136af47b84c7f3dcfc32cbb2a4c6bc
+  zego_zim: 0292af2a473a14e4719a931d2a682ef2ff388598
   zego_zpns: 282d9f9926ea5dff87efbafae8cf33fdada41f4f
   ZegoUIKitReport: a993f7ccc5d243998a7e601a60e16fcd6c084417
-  ZIM: cf0cb6a5b7c40803056c421e289b58440ac98292
+  ZIM: 6d5706e6a0ad3e6500ccacb8eede4324f878c195
   ZIPFoundation: dfd3d681c4053ff7e2f7350bc4e53b5dba3f5351
   ZPNs: 73bad0046a74e37315201053f9a0e7ac625d9436
 

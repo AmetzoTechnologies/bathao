@@ -6,13 +6,13 @@ import 'package:bathao/Theme/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../Controllers/BottomNavController/BottomNavController.dart';
-import '../../Screens/HomePage/dummy_home.dart';
+
 
 class MainPage extends StatelessWidget {
   final BottomNavController controller = Get.put(BottomNavController());
 
   final List<Widget> pages = [
-    DummyHomePage() ,
+    HomePage() ,
     CallHistoryPage(),
     CoinPurchasePage(),
     ProfilePage(),
