@@ -1,6 +1,7 @@
 class User {
   String? id;
   String? phone;
+  String? countryCode;
   String? name;
   String? email;
   String? profilePic;
@@ -12,6 +13,7 @@ class User {
   User({
     this.id,
     this.phone,
+    this.countryCode,
     this.name,
     this.email,
     this.langs,
@@ -24,6 +26,7 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json['_id'] as String?,
     phone: json['phone'] as String?,
+    countryCode: json['countryCode'] as String?,
     name: json['name'] as String?,
     email: json['email'] as String?,
     langs: json['langs'] as List<dynamic>?,
@@ -45,6 +48,7 @@ class User {
   Map<String, dynamic> toJson() => {
     '_id': id,
     'phone': phone,
+    'countryCode': countryCode,
     'name': name,
     'email': email,
     'langs': langs,

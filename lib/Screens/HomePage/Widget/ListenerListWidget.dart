@@ -5,16 +5,15 @@ import 'package:get/get.dart';
 import 'UserCardWidget.dart';
 
 class ListenerListWidget extends StatelessWidget {
-  final ScrollController? scrollController; // Add this parameter
+  final ScrollController? scrollController;
 
   const ListenerListWidget({
     super.key,
-    this.scrollController, // Optional parameter
+    this.scrollController,
   });
 
   String getAgeOrNA(DateTime? birthDate) {
     if (birthDate == null) return 'N/A';
-
     final now = DateTime.now();
     int age = now.year - birthDate.year;
     if (now.month < birthDate.month ||
@@ -26,118 +25,91 @@ class ListenerListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ListenerController>();
-    final screenWidth = MediaQuery.of(context).size.width;
-    final cardSpacing = screenWidth * 0.01;
+    final listenerController = Get.find<ListenerController>();
 
     return GetBuilder<ListenerController>(
       builder: (controller) {
+        // loading first time
         if (controller.isLoading && controller.listenerData.isEmpty) {
+          return const SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.all(32.0),
+              child: Center(child: CircularProgressIndicator()),
+            ),
+          );
+        }
+
+        // empty state
+        if (!controller.isLoading && controller.listenerData.isEmpty) {
           return const SliverToBoxAdapter(
             child: Center(
               child: Padding(
-                padding: EdgeInsets.all(32.0),
-                child: CircularProgressIndicator(),
+                padding: EdgeInsets.only(top: 100),
+                child: Text(
+                  "No specialists found",
+                  style: TextStyle(fontSize: 18, color: Colors.white70),
+                ),
               ),
             ),
           );
         }
 
-        // Show empty state when no listeners found
-        if (!controller.isLoading && controller.listenerData.isEmpty) {
-          return SliverToBoxAdapter(
-            child: Container(
-              padding: const EdgeInsets.all(32),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.person_search,
-                    size: 80,
-                    color: Colors.grey[400],
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'No specialists found',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[700],
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Try selecting different languages or filters',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
+        // list
+        return SliverPadding(
+          padding: const EdgeInsets.only(bottom: 90 ,top: 10,left: 15,right: 15),
 
-        return SliverList(
-          delegate: SliverChildBuilderDelegate(
-                (context, index) {
-              final user = controller.listenerData[index];
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                final user = controller.listenerData[index];
 
-              // Show loading indicator at the bottom when loading more
-              if (index == controller.listenerData.length - 1 &&
-                  controller.isLoading) {
-                return Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                        bottom: cardSpacing,
-                        left: 16,
-                        right: 16,
+                // bottom loading indicator when pagination runs
+                if (index == controller.listenerData.length - 1 &&
+                    controller.isLoading) {
+                  return Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 2),
+                        child: UserCard(
+                          name: user.displayName ?? "Unknown",
+                          age: getAgeOrNA(user.dateOfBirth),
+                          gender: user.gender ?? "",
+                          imageUrl: user.profilePic,
+                          audioRate: audioRate.value,
+                          videoRate: videoRate.value,
+                          callType: user.callType ?? "",
+                          coins: 3,
+                          status: user.status ?? "",
+                          userId: user.id ?? "",
+                        ),
                       ),
-                      child: UserCard(
-                        name: user.displayName ?? "Unknown",
-                        age: getAgeOrNA(user.dateOfBirth),
-                        gender: user.gender ?? "",
-                        imageUrl: user.profilePic,
-                        audioRate: audioRate.value,
-                        videoRate: videoRate.value,
-                        callType: user.callType ?? "",
-                        coins: 3,
-                        status: user.status ?? "",
-                        userId: user.id ?? "",
+                      const Padding(
+                        padding: EdgeInsets.all(16),
+                        child: CircularProgressIndicator(),
                       ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: CircularProgressIndicator(),
-                    ),
-                  ],
+                    ],
+                  );
+                }
+
+                // normal card
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 2),
+                  child: UserCard(
+                    name: user.displayName ?? "Unknown",
+                    age: getAgeOrNA(user.dateOfBirth),
+                    gender: user.gender ?? "",
+                    imageUrl: user.profilePic,
+                    audioRate: audioRate.value,
+                    videoRate: videoRate.value,
+                    callType: user.callType ?? "",
+                    coins: 3,
+                    status: user.status ?? "",
+                    userId: user.id ?? "",
+                  ),
                 );
-              }
-
-              return Padding(
-                padding: EdgeInsets.only(
-                  bottom: cardSpacing,
-                  left: 16,
-                  right: 16,
-                ),
-                child: UserCard(
-                  name: user.displayName ?? "Unknown",
-                  age: getAgeOrNA(user.dateOfBirth),
-                  gender: user.gender ?? "",
-                  imageUrl: user.profilePic,
-                  audioRate: audioRate.value,
-                  videoRate: videoRate.value,
-                  callType: user.callType ?? "",
-                  coins: 3,
-                  status: user.status ?? "",
-                  userId: user.id ?? "",
-                ),
-              );
-            },
-            childCount: controller.listenerData.length,
+              },
+              childCount: controller.listenerData.length,
+            ),
           ),
         );
       },

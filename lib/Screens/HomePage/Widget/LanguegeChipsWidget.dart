@@ -14,20 +14,23 @@ class LanguageChips extends StatelessWidget {
     this.onSelectionChanged,
   });
 
-  final LanguageController controller = Get.put(LanguageController());
+  // ❌ DO NOT create a new controller here
+  // final LanguageController controller = Get.put(LanguageController());
+
+  // ✅ Correct: use existing controller
+  LanguageController get controller => Get.find<LanguageController>();
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    // Responsive sizing
-    final horizontalPadding = screenWidth * 0.05; // dynamic
+    final horizontalPadding = screenWidth * 0.05;
     final verticalPadding = screenWidth * 0.025;
-    final fontSize = screenWidth * 0.035; // scales on tablet & small phones
+    final fontSize = screenWidth * 0.035;
     final chipSpacing = screenWidth * 0.03;
 
-    return Obx(
-          () => SingleChildScrollView(
+    return Obx(() {
+      return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
           children: languages.map((lang) {
@@ -40,7 +43,7 @@ class LanguageChips extends StatelessWidget {
                   controller.toggleLanguage(lang);
                   if (onSelectionChanged != null) {
                     onSelectionChanged!(
-                      controller.selectedLanguages.toList(),
+                      controller.selectedLanguages,
                     );
                   }
                 },
@@ -50,9 +53,8 @@ class LanguageChips extends StatelessWidget {
                     vertical: verticalPadding,
                   ),
                   decoration: BoxDecoration(
-                    color: isSelected
-                        ? AppColors.onBoardPrimary
-                        : AppColors.grayColor,
+                    color:
+                    isSelected ? AppColors.onBoardPrimary : AppColors.grayColor,
                     borderRadius: BorderRadius.circular(30),
                     border: Border.all(
                       color: Colors.transparent,
@@ -63,9 +65,8 @@ class LanguageChips extends StatelessWidget {
                     lang,
                     style: TextStyle(
                       fontSize: fontSize,
-                      color: isSelected
-                          ? Colors.greenAccent
-                          : AppColors.textColor,
+                      color:
+                      isSelected ? Colors.greenAccent : AppColors.textColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -74,7 +75,7 @@ class LanguageChips extends StatelessWidget {
             );
           }).toList(),
         ),
-      ),
-    );
+      );
+    });
   }
 }

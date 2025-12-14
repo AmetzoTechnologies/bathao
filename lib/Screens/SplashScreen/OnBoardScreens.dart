@@ -1,61 +1,82 @@
 import 'package:bathao/Screens/AuthPage/LoginPage.dart';
-import 'package:bathao/Screens/SplashScreen/OnBoardScreenOne.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Controllers/OnBoardController/OnBoardController.dart';
+import 'OnBoardScreenOne.dart';
 
-class OnBoardScreens extends StatelessWidget {
-  OnBoardScreens({super.key});
+class OnBoardScreens extends StatefulWidget {
+  const OnBoardScreens({super.key});
 
-  final PageController controller = PageController();
-  final OnBoardController onBoardController = Get.put(OnBoardController());
+  @override
+  State<OnBoardScreens> createState() => _OnBoardScreensState();
+}
+
+class _OnBoardScreensState extends State<OnBoardScreens> {
+  final PageController _controller = PageController();
+  final OnBoardController _onBoardController = Get.put(OnBoardController());
+
+  @override
+  void initState() {
+    super.initState();
+    // Make status bar transparent for immersive experience
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
-
     return Scaffold(
+      extendBodyBehindAppBar: true,
       body: PageView(
-        controller: controller,
-        onPageChanged: (index) => onBoardController.setCurrentPage(index),
-
-        /// Your 3 onboarding pages (NO design change, only responsive)
+        controller: _controller,
+        physics: const BouncingScrollPhysics(),
+        onPageChanged: (index) => _onBoardController.setCurrentPage(index),
         children: [
+          /// PAGE 1
           Obx(
                 () => OnBoardPage(
               imagePath: 'assets/onboarding_1.png',
-              title: '"Where Voices Spark Connections"',
+              title: 'Where Voices Spark Connections',
               subtitle:
-              '"Discover meaningful relationships through real-time voice & video calls."\n"No texts. Just talk. Real feelings start here."',
-              currentPage: onBoardController.currentPage.value,
+              'Discover meaningful relationships through real-time voice & video calls. No texts. Just talk. Real feelings start here.',
+              currentPage: _onBoardController.currentPage.value,
               onTap: () => _handleNext(context),
             ),
           ),
 
+          /// PAGE 2
           Obx(
                 () => OnBoardPage(
               imagePath: 'assets/onboarding_2.png',
               title: 'Meet. Match. Call. Connect.',
               subtitle:
               'Experience real connections through voice and video. Let your voice lead the way to something special.',
-              currentPage: onBoardController.currentPage.value,
+              currentPage: _onBoardController.currentPage.value,
               onTap: () => _handleNext(context),
             ),
           ),
 
+          /// PAGE 3
           Obx(
                 () => OnBoardPage(
               imagePath: 'assets/onboarding_3.png',
-              title: 'Where Voices Spark Real Connections.',
+              title: 'Where Voices Spark Real Connections',
               subtitle:
               'Find your match, make meaningful conversations, and fall in love through real-time voice and video calling.',
-              currentPage: onBoardController.currentPage.value,
-              onTap: () async {
-                SharedPreferences pref = await SharedPreferences.getInstance();
-                await pref.setBool('onboard_seen', true);
-                _handleNext(context);
-              },
+              currentPage: _onBoardController.currentPage.value,
+              onTap: () => _completeOnboarding(context),
             ),
           ),
         ],
@@ -63,17 +84,40 @@ class OnBoardScreens extends StatelessWidget {
     );
   }
 
-  /// Page navigation logic (unchanged)
+  /// Navigate to next page
   void _handleNext(BuildContext context) {
-    int currentPage = onBoardController.currentPage.value;
+    final currentPage = _onBoardController.currentPage.value;
 
     if (currentPage < 2) {
-      controller.nextPage(
+      _controller.nextPage(
         duration: const Duration(milliseconds: 500),
-        curve: Curves.easeInOut,
+        curve: Curves.easeInOutCubic,
       );
-    } else {
-      Get.off(LoginPage());
+    }
+  }
+
+  /// Complete onboarding and navigate to login
+  Future<void> _completeOnboarding(BuildContext context) async {
+    try {
+      final pref = await SharedPreferences.getInstance();
+      await pref.setBool('onboard_seen', true);
+
+      // Add slight delay for better UX
+      await Future.delayed(const Duration(milliseconds: 200));
+
+      if (mounted) {
+        Get.off(
+              () => LoginPage(),
+          transition: Transition.fadeIn,
+          duration: const Duration(milliseconds: 500),
+        );
+      }
+    } catch (e) {
+      debugPrint('Error completing onboarding: $e');
+      // Navigate anyway to prevent user from getting stuck
+      if (mounted) {
+        Get.off(() => LoginPage());
+      }
     }
   }
 }

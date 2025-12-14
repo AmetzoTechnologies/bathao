@@ -12,7 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../CallController/CallController.dart';
+import '../HomeController/HomeController.dart';
+import '../LanguageController/LanguageController.dart';
 import '../ListenerController/ListenerController.dart';
+import '../PaymentController/PaymentController.dart';
 import 'call_init_service.dart';
 
 UserDataModel? userModel;
@@ -33,6 +37,8 @@ class AuthController extends GetxController {
     super.onInit();
     startTimer();
   }
+
+
 
   Future<bool> checkAppVersion() async {
     final endpoint = "api/v1/user/get-app-version";
@@ -104,14 +110,28 @@ class AuthController extends GetxController {
             userName: userModel!.user!.name!,
           );
 
-// Initialize ListenerController
-          if (!Get.isRegistered<ListenerController>()) {
-            Get.put(ListenerController());
-          } else {
-            Get.find<ListenerController>().refreshListeners();
-          }
+          token = response.body['token'];
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString("token", token!);
+          jwsToken = token;
 
-          // Now navigate to MainPage with data already loaded
+// Load user data
+          await getUserData();
+
+// Register ALL controllers before UI build
+          if (!Get.isRegistered<PaymentController>()) Get.put(PaymentController());
+          if (!Get.isRegistered<CallController>()) Get.put(CallController(), permanent: true);
+          if (!Get.isRegistered<HomeController>()) Get.put(HomeController());
+          if (!Get.isRegistered<ListenerController>()) Get.put(ListenerController());
+          if (!Get.isRegistered<LanguageController>()) Get.put(LanguageController());
+
+// Initialize Zego AFTER userModel is guaranteed to exist
+          await initZegoCallService(
+            userId: userModel!.user!.id!,
+            userName: userModel!.user!.name!,
+          );
+
+// Navigate
           Get.offAll(MainPage());
         } else {
           Get.to(

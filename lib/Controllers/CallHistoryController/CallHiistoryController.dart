@@ -17,35 +17,52 @@ class CallHistoryController extends GetxController {
     if (isLoading.value || !hasMore.value) return;
 
     isLoading.value = true;
-    final endpoint =
-        'api/v1/call/user-call-history?page=$currentPage&limit=$limit';
+
+    final endpoint = 'api/v1/call/user-call-history?page=$currentPage&limit=$limit';
 
     try {
       final response = await _apiService.getRequest(
         endpoint,
         bearerToken: jwsToken,
       );
+
       if (response.isOk) {
-        final CallHistoryModel fetched = CallHistoryModel.fromJson(
-          response.body,
-        );
+        final fetched = CallHistoryModel.fromJson(response.body);
         final newItems = fetched.history ?? [];
 
-        if (newItems.length < limit) {
+        if (newItems.isEmpty) {
           hasMore.value = false;
-        }
+        } else {
+          historyData.addAll(newItems);
 
-        historyData.addAll(newItems);
-        currentPage++;
-      } else {
-        print("API Error: ${response.body}");
+          if (newItems.length < limit) {
+            hasMore.value = false;
+          }
+
+          currentPage++;
+        }
       }
     } catch (e) {
-      print("Fetch error: $e");
+      print("Error: $e");
     } finally {
       isLoading.value = false;
     }
   }
+
+
+  Future<void> refreshHistory() async {
+    // reset pagination
+    currentPage = 1;
+    hasMore.value = true;
+
+    // clear old data
+    historyData.clear();
+
+    // load first page again
+    await getHistory();
+  }
+
+
 
   @override
   void onInit() {

@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import '../../Controllers/LanguageController/LanguageController.dart';
 
 
-class CheckLog extends StatelessWidget {
-  const CheckLog({super.key});
+class CheckLang extends StatelessWidget {
+  const CheckLang({super.key});
 
   @override
   Widget build(BuildContext context) {

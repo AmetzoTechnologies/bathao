@@ -18,9 +18,9 @@ class CallTracker {
   bool _isCallActive = false;
 
   void onRoomStateChanged(ZegoUIKitRoomState state) async {
-    debugPrint(
-      '📡 Room state changed: ${state.reason.name} at ${DateTime.now()}',
-    );
+    // debugPrint(
+    //   '📡 Room state changed: ${state.reason.name} at ${DateTime.now()}',
+    // );
     final zego = ZegoUIKit.instance;
     try {
       zego.setAudioOutputToSpeaker(false);
@@ -29,13 +29,13 @@ class CallTracker {
           // Ensure call start logic runs only once
           // defined earlier
           _isCallActive = true;
-          debugPrint('✅ Call started - Initializing call data');
+          // debugPrint('✅ Call started - Initializing call data');
 
           // Ensure receiverId and callType are set before starting the call
           if (receiverId == null) {
-            debugPrint(
-              "❌ Error: receiverId or callType is null when logging in.",
-            );
+            // debugPrint(
+            //   "❌ Error: receiverId or callType is null when logging in.",
+            // );
             // Optionally, handle this error (e.g., hang up, show dialog)
             ZegoUIKitPrebuiltCallController().hangUp(
               Get.context!, // Still using Get.context, see notes below

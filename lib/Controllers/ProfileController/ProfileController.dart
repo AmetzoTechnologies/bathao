@@ -16,6 +16,13 @@ class ProfileController extends GetxController {
   final ApiService _apiService = ApiService();
   final ImagePicker _picker = ImagePicker();
 
+  String formatPhone(String? cc, String? phone) {
+    final c = cc ?? "";
+    final p = phone ?? "";
+    if (p.length <= 5) return "$c $p";
+    return "$c ${p.substring(0, 5)} ${p.substring(5)}";
+  }
+
   void setName(String newName) async {
     await updateProfileName(newName);
     name.value = newName;

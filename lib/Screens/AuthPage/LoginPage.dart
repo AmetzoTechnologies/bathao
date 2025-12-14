@@ -17,6 +17,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     AuthController controller = Get.put(AuthController());
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         height: double.infinity,
         decoration: BoxDecoration(
@@ -59,12 +60,14 @@ class LoginPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(height: 10),
-                        Text(
-                          "Login",
-                          style: TextStyle(
-                            color: AppColors.textColor,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
+                        Center(
+                          child: Text(
+                            "Login",
+                            style: TextStyle(
+                              color: AppColors.textColor,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         SizedBox(height: 10),
