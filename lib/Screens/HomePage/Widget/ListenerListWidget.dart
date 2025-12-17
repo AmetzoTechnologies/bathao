@@ -1,7 +1,7 @@
-import 'package:bathao/Controllers/ListenerController/ListenerController.dart';
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../Controllers/ListenerController/ListenerController.dart';
 import 'UserCardWidget.dart';
 
 class ListenerListWidget extends StatelessWidget {

@@ -1,9 +1,4 @@
-import 'package:bathao/Controllers/AuthController/AuthController.dart';
-import 'package:bathao/Controllers/AuthController/RegisterController.dart';
-import 'package:bathao/Screens/SplashScreen/DecideScreen.dart';
-import 'package:bathao/Screens/SplashScreen/OnBoardScreens.dart';
-import 'package:bathao/Theme/Colors.dart';
-import 'package:bathao/Widgets/MainPage/MainPage.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,9 +8,13 @@ import 'package:zego_uikit/zego_uikit.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 
+import 'Controllers/AuthController/RegisterController.dart';
 import 'Controllers/AuthController/bindings.dart';
 import 'Controllers/LanguageController/LanguageController.dart';
 import 'Screens/AuthPage/LoginPage.dart';
+import 'Screens/SplashScreen/DecideScreen.dart';
+import 'Screens/SplashScreen/OnBoardScreens.dart';
+import 'Theme/Colors.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 String? receiverId;

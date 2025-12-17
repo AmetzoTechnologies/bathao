@@ -1,7 +1,7 @@
-import 'package:bathao/Controllers/AuthController/DynamicControlller.dart';
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:linear_progress_bar/linear_progress_bar.dart';
+import '../../Controllers/AuthController/DynamicControlller.dart';
 import '../../Theme/Colors.dart';
 import '../../Controllers/AuthController/RegisterController.dart';
 import '../../Controllers/LanguageController/LanguageController.dart';
@@ -19,7 +19,7 @@ class LanguageSelectionPage extends StatelessWidget {
   });
 
   // CONTROLLERS
-  final langController = Get.put(Dynamiccontrolller());
+  final langController = Get.put( Dynamiccontrolller());
   final registerController = Get.find<RegisterController>();
 
   @override

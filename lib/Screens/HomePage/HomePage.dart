@@ -8,7 +8,6 @@ import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import '../../Controllers/AuthController/AuthController.dart';
 import '../../Controllers/CallController/CallController.dart';
 import '../../Controllers/HomeController/HomeController.dart';
-import '../../Controllers/LanguageController/LanguageController.dart';
 import '../../Controllers/ListenerController/ListenerController.dart';
 import '../../Controllers/PaymentController/PaymentController.dart';
 import '../../Models/listners_model/receiver.dart' as ListenerModel;
@@ -35,14 +34,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LanguageController langController = Get.isRegistered<LanguageController>()
-        ? Get.find<LanguageController>()
-        : Get.put(LanguageController());
-
     bool hasShownUnavailableDialog = false;
     final callTracker = CallTracker();
-
-
 
     scrollController.addListener(() {
       if (scrollController.position.pixels >=
@@ -372,14 +365,9 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
-
-
                     LanguageChips(
-                      languages: langController.availableLanguages,
-                    )
-
-                    ,
-
+                      languages: ['English', 'Malayalam', 'Kannada', 'Tamil',"Hindi","Telugu"],
+                    ),
                     const SizedBox(height: 10),
                   ],
                 ),
@@ -392,3 +380,5 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+

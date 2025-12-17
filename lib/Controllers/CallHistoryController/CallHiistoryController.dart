@@ -1,8 +1,9 @@
-import 'package:bathao/Controllers/AuthController/RegisterController.dart';
-import 'package:bathao/Models/call_history_model/history.dart';
+
 import 'package:get/get.dart';
 import '../../Models/call_history_model/call_history_model.dart';
+import '../../Models/call_history_model/history.dart';
 import '../../Services/ApiService.dart';
+import '../AuthController/RegisterController.dart';
 
 class CallHistoryController extends GetxController {
   CallHistoryModel callHistoryModel = CallHistoryModel();

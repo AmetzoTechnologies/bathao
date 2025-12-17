@@ -1,12 +1,12 @@
 import 'dart:ui';
-import 'package:bathao/Screens/CallHistoryPage/CallHistoryPage.dart';
-import 'package:bathao/Screens/CoinPurchasePage/CoinPurchasePage.dart';
-import 'package:bathao/Screens/HomePage/HomePage.dart';
-import 'package:bathao/Screens/ProfilePage/ProfilePage.dart';
-import 'package:bathao/Theme/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../Controllers/BottomNavController/BottomNavController.dart';
+import '../../Screens/CallHistoryPage/CallHistoryPage.dart';
+import '../../Screens/CoinPurchasePage/CoinPurchasePage.dart';
+import '../../Screens/HomePage/HomePage.dart';
+import '../../Screens/ProfilePage/ProfilePage.dart';
+import '../../Theme/Colors.dart';
 
 class MainPage extends StatelessWidget {
   final BottomNavController controller = Get.put(BottomNavController());

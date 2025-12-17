@@ -1,24 +1,24 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
 
 import java.util.Properties
         import java.io.FileInputStream
 
-// Load keystore properties
 val keystoreProperties = Properties()
 val keystorePropertiesFile = rootProject.file("key.properties")
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+} else {
+    throw GradleException("key.properties not found")
 }
 
 android {
     namespace = "com.ametzo.bathao"
-    compileSdk = 36  // Updated to support plugins requiring SDK 36
-    ndkVersion = "27.0.12077973"  // Updated to match plugin requirements
+    compileSdk = 36
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -26,12 +26,12 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = "11"
     }
 
     defaultConfig {
         applicationId = "com.ametzo.bathao"
-        minSdk = 23  // Updated from 21 to 23 for proximity_sensor compatibility
+        minSdk = 23
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -39,34 +39,28 @@ android {
 
     signingConfigs {
         create("release") {
-            keyAlias = keystoreProperties["keyAlias"] as String
-            keyPassword = keystoreProperties["keyPassword"] as String
-            storeFile = file(keystoreProperties["storeFile"] as String)
-            storePassword = keystoreProperties["storePassword"] as String
+            keyAlias = keystoreProperties["keyAlias"]?.toString()
+                ?: throw GradleException("keyAlias missing")
+            keyPassword = keystoreProperties["keyPassword"]?.toString()
+                ?: throw GradleException("keyPassword missing")
+            storeFile = file(
+                keystoreProperties["storeFile"]?.toString()
+                    ?: throw GradleException("storeFile missing")
+            )
+            storePassword = keystoreProperties["storePassword"]?.toString()
+                ?: throw GradleException("storePassword missing")
         }
     }
 
     buildTypes {
         release {
             signingConfig = signingConfigs.getByName("release")
-
-            // Enable code shrinking, obfuscation, and optimization
             isMinifyEnabled = true
             isShrinkResources = true
-
-            // Enable R8 full mode for maximum optimization
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-
-            // Additional optimizations
-            ndk {
-                debugSymbolLevel = "SYMBOL_TABLE"
-            }
-        }
-        debug {
-            signingConfig = signingConfigs.getByName("debug")
         }
     }
 }

@@ -1,10 +1,12 @@
 import 'dart:math';
-import 'package:bathao/Screens/HomePage/Widget/CallButton.dart';
-import 'package:bathao/Services/ApiService.dart';
+
 import 'package:get/get.dart';
-import 'package:bathao/Controllers/CallController/CallController.dart';
-import 'package:bathao/Theme/Colors.dart';
+
 import 'package:flutter/material.dart';
+
+import '../../../Controllers/CallController/CallController.dart';
+import '../../../Services/ApiService.dart';
+import 'CallButton.dart';
 
 class UserCard extends StatelessWidget {
   final String name;

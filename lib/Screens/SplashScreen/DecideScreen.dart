@@ -1,10 +1,11 @@
-import 'package:bathao/Controllers/AuthController/RegisterController.dart';
-import 'package:bathao/Theme/Colors.dart';
-import 'package:bathao/Widgets/MainPage/MainPage.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../Controllers/AuthController/AuthController.dart';
+import '../../Controllers/AuthController/RegisterController.dart';
+import '../../Theme/Colors.dart';
+import '../../Widgets/MainPage/MainPage.dart';
 import '../AuthPage/LoginPage.dart';
 import '../HomePage/HomePage.dart';
 import '../UpdateScreen/UpdateScreen.dart';

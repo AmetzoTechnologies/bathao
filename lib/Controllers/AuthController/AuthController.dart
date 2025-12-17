@@ -1,22 +1,17 @@
-import 'package:bathao/Controllers/AuthController/RegisterController.dart';
-import 'package:bathao/Models/user_model.dart';
-import 'package:bathao/Models/user_model/user_model.dart';
-import 'package:bathao/Screens/AuthPage/LoginPage.dart';
-import 'package:bathao/Screens/AuthPage/OtpVerfyPage.dart';
-import 'package:bathao/Screens/AuthPage/RegsterPage.dart';
-import 'package:bathao/Screens/HomePage/HomePage.dart';
-import 'package:bathao/Services/ApiService.dart';
-import 'package:bathao/Theme/Colors.dart';
-import 'package:bathao/Widgets/MainPage/MainPage.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../CallController/CallController.dart';
-import '../HomeController/HomeController.dart';
-import '../LanguageController/LanguageController.dart';
+import '../../Models/user_model/user_model.dart';
+import '../../Screens/AuthPage/LoginPage.dart';
+import '../../Screens/AuthPage/OtpVerfyPage.dart';
+import '../../Screens/AuthPage/RegsterPage.dart';
+import '../../Services/ApiService.dart';
+import '../../Theme/Colors.dart';
+import '../../Widgets/MainPage/MainPage.dart';
 import '../ListenerController/ListenerController.dart';
-import '../PaymentController/PaymentController.dart';
+import 'RegisterController.dart';
 import 'call_init_service.dart';
 
 UserDataModel? userModel;
@@ -110,28 +105,14 @@ class AuthController extends GetxController {
             userName: userModel!.user!.name!,
           );
 
-          token = response.body['token'];
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString("token", token!);
-          jwsToken = token;
+// Initialize ListenerController
+          if (!Get.isRegistered<ListenerController>()) {
+            Get.put(ListenerController());
+          } else {
+            Get.find<ListenerController>().refreshListeners();
+          }
 
-// Load user data
-          await getUserData();
-
-// Register ALL controllers before UI build
-          if (!Get.isRegistered<PaymentController>()) Get.put(PaymentController());
-          if (!Get.isRegistered<CallController>()) Get.put(CallController(), permanent: true);
-          if (!Get.isRegistered<HomeController>()) Get.put(HomeController());
-          if (!Get.isRegistered<ListenerController>()) Get.put(ListenerController());
-          if (!Get.isRegistered<LanguageController>()) Get.put(LanguageController());
-
-// Initialize Zego AFTER userModel is guaranteed to exist
-          await initZegoCallService(
-            userId: userModel!.user!.id!,
-            userName: userModel!.user!.name!,
-          );
-
-// Navigate
+          // Now navigate to MainPage with data already loaded
           Get.offAll(MainPage());
         } else {
           Get.to(

@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'package:bathao/Controllers/PaymentController/PaymentController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:zego_uikit/zego_uikit.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
-import 'package:bathao/Controllers/CallController/CallController.dart';
 import 'package:get/get.dart';
 
+import '../Controllers/CallController/CallController.dart';
+import '../Controllers/PaymentController/PaymentController.dart';
 import '../main.dart';
 
 class CallTracker {

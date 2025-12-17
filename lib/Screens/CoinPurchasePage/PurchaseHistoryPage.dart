@@ -1,9 +1,9 @@
-import 'package:bathao/Theme/Colors.dart';
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../Controllers/PaymentController/PaymentController.dart';
+import '../../Theme/Colors.dart';
 
 class PurchaseHistoryPage extends StatelessWidget {
   PurchaseHistoryPage({super.key});

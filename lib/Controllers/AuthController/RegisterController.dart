@@ -1,11 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bathao/Controllers/AuthController/AuthController.dart';
-import 'package:bathao/Controllers/ProfileController/ProfileController.dart';
-import 'package:bathao/Models/user_model.dart';
-import 'package:bathao/Services/ApiService.dart';
-import 'package:bathao/Widgets/MainPage/MainPage.dart';
+
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +10,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
+import '../../Models/user_model.dart';
+import '../../Services/ApiService.dart';
+import '../../Widgets/MainPage/MainPage.dart';
 import '../ListenerController/ListenerController.dart';
+import '../ProfileController/ProfileController.dart';
+import 'AuthController.dart';
 import 'call_init_service.dart';
 
 String? jwsToken;

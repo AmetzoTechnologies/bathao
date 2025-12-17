@@ -1,6 +1,7 @@
-import 'package:bathao/Controllers/AuthController/DynamicControlller.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../Controllers/AuthController/DynamicControlller.dart';
 import '../../Controllers/LanguageController/LanguageController.dart';
 
 

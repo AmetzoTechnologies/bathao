@@ -1,9 +1,11 @@
-import 'package:bathao/Controllers/AuthController/AuthController.dart';
-import 'package:bathao/Controllers/AuthController/RegisterController.dart';
-import 'package:bathao/Controllers/PaymentController/PaymentController.dart';
-import 'package:bathao/Services/ApiService.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../Services/ApiService.dart';
+import '../AuthController/AuthController.dart';
+import '../AuthController/RegisterController.dart';
+import '../PaymentController/PaymentController.dart';
 
 class CallController extends GetxController {
   final ApiService _apiService = ApiService();

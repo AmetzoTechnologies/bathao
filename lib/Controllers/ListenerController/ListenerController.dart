@@ -1,9 +1,9 @@
-import 'package:bathao/Controllers/AuthController/RegisterController.dart';
-import 'package:get/get.dart';
+ import 'package:get/get.dart';
 
 import '../../Models/listners_model/listners_model.dart';
 import '../../Models/listners_model/receiver.dart';
 import '../../Services/ApiService.dart';
+import '../AuthController/RegisterController.dart';
 
 // Global reactive values
 RxInt audioRate = 0.obs;

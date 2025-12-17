@@ -1,11 +1,12 @@
-import 'package:bathao/Controllers/AuthController/AuthController.dart';
-import 'package:bathao/Controllers/AuthController/RegisterController.dart';
-import 'package:bathao/Screens/AuthPage/LanguegeSelectionPage.dart';
-import 'package:bathao/Theme/Colors.dart';
-import 'package:bathao/Widgets/ProfileImagePicker.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:linear_progress_bar/linear_progress_bar.dart';
+
+import '../../Controllers/AuthController/RegisterController.dart';
+import '../../Theme/Colors.dart';
+import '../../Widgets/ProfileImagePicker.dart';
+import 'LanguegeSelectionPage.dart';
 
 class RegisterPage extends StatelessWidget {
   final String phone;

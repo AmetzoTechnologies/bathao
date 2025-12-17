@@ -1,14 +1,13 @@
 import 'dart:ui';
 
-import 'package:bathao/Screens/AuthPage/OtpVerfyPage.dart';
-import 'package:bathao/Widgets/TermsCheckBox.dart';
-import 'package:country_code_picker/country_code_picker.dart';
+ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../Controllers/AuthController/AuthController.dart';
 import '../../Theme/Colors.dart';
+import '../../Widgets/TermsCheckBox.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -17,7 +16,8 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     AuthController controller = Get.put(AuthController());
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
+
       body: Container(
         height: double.infinity,
         decoration: BoxDecoration(

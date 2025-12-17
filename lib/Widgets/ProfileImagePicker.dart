@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import 'package:bathao/Controllers/AuthController/RegisterController.dart';
-import 'package:bathao/Theme/Colors.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../Controllers/AuthController/RegisterController.dart';
 import '../Screens/StickerPickerPage/StickerPickerPage.dart';
+import '../Theme/Colors.dart';
 
 class ProfileImagePicker extends StatelessWidget {
   const ProfileImagePicker({super.key});

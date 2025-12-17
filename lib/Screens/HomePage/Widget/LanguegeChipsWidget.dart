@@ -1,8 +1,8 @@
-import 'package:bathao/Theme/Colors.dart';
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../Controllers/LanguageController/LanguageController.dart';
+import '../../../Theme/Colors.dart';
 
 class LanguageChips extends StatelessWidget {
   final List<String> languages;
@@ -14,23 +14,20 @@ class LanguageChips extends StatelessWidget {
     this.onSelectionChanged,
   });
 
-  // ❌ DO NOT create a new controller here
-  // final LanguageController controller = Get.put(LanguageController());
-
-  // ✅ Correct: use existing controller
-  LanguageController get controller => Get.find<LanguageController>();
+  final LanguageController controller = Get.put(LanguageController());
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    final horizontalPadding = screenWidth * 0.05;
+    // Responsive sizing
+    final horizontalPadding = screenWidth * 0.05; // dynamic
     final verticalPadding = screenWidth * 0.025;
-    final fontSize = screenWidth * 0.035;
+    final fontSize = screenWidth * 0.035; // scales on tablet & small phones
     final chipSpacing = screenWidth * 0.03;
 
-    return Obx(() {
-      return SingleChildScrollView(
+    return Obx(
+          () => SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
           children: languages.map((lang) {
@@ -43,7 +40,7 @@ class LanguageChips extends StatelessWidget {
                   controller.toggleLanguage(lang);
                   if (onSelectionChanged != null) {
                     onSelectionChanged!(
-                      controller.selectedLanguages,
+                      controller.selectedLanguages.toList(),
                     );
                   }
                 },
@@ -53,8 +50,9 @@ class LanguageChips extends StatelessWidget {
                     vertical: verticalPadding,
                   ),
                   decoration: BoxDecoration(
-                    color:
-                    isSelected ? AppColors.onBoardPrimary : AppColors.grayColor,
+                    color: isSelected
+                        ?  AppColors.onBoardPrimary
+                        : AppColors.grayColor,
                     borderRadius: BorderRadius.circular(30),
                     border: Border.all(
                       color: Colors.transparent,
@@ -65,8 +63,9 @@ class LanguageChips extends StatelessWidget {
                     lang,
                     style: TextStyle(
                       fontSize: fontSize,
-                      color:
-                      isSelected ? Colors.greenAccent : AppColors.textColor,
+                      color: isSelected
+                          ? Colors.greenAccent
+                          : AppColors.textColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -75,7 +74,7 @@ class LanguageChips extends StatelessWidget {
             );
           }).toList(),
         ),
-      );
-    });
+      ),
+    );
   }
 }

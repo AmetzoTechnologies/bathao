@@ -1,9 +1,9 @@
-import 'package:bathao/Screens/AuthPage/LoginPage.dart';
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Controllers/OnBoardController/OnBoardController.dart';
+import '../AuthPage/LoginPage.dart';
 import 'OnBoardScreenOne.dart';
 
 class OnBoardScreens extends StatefulWidget {

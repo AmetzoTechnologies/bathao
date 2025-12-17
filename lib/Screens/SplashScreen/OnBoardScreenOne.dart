@@ -78,15 +78,17 @@ class OnBoardPage extends StatelessWidget {
           Positioned(
             left: 0,
             right: 0,
-            bottom: 0,
+            bottom: MediaQuery.of(context).padding.bottom,
             child: SafeArea(
               top: false,
               child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.07,
-                  vertical: size.height * 0.03,
+                padding: EdgeInsets.fromLTRB(
+                  size.width * 0.07,
+                  size.height * 0.03,
+                  size.width * 0.07,
+                  size.height * 0.02, // FIXED bottom padding
                 ),
-                decoration: BoxDecoration(
+                decoration:BoxDecoration(
                   color: Colors.black.withOpacity(0.25),
                   borderRadius: BorderRadius.vertical(
                     top: Radius.circular(isTablet ? 45 : 35),

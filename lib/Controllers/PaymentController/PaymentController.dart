@@ -1,17 +1,19 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:bathao/Controllers/AuthController/RegisterController.dart';
-import 'package:bathao/Models/plan_model/plan.dart';
-import 'package:bathao/Models/plan_model/plan_model.dart';
-import 'package:bathao/Models/recharge_model/history.dart';
-import 'package:bathao/Models/recharge_model/recharge_model.dart';
-import 'package:bathao/Screens/CoinPurchasePage/PaymentWebView.dart';
-import 'package:bathao/Services/ApiService.dart';
-import 'package:bathao/Theme/Colors.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../Models/plan_model/plan.dart';
+import '../../Models/plan_model/plan_model.dart';
+import '../../Models/recharge_model/history.dart';
+import '../../Models/recharge_model/recharge_model.dart';
+import '../../Screens/CoinPurchasePage/PaymentWebView.dart';
+import '../../Services/ApiService.dart';
+import '../../Theme/Colors.dart';
+import '../AuthController/RegisterController.dart';
 
 RxInt totalCoin = 0.obs;
 

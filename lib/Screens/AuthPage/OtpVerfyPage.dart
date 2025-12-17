@@ -1,9 +1,9 @@
-import 'package:bathao/Theme/Colors.dart';
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../Controllers/AuthController/AuthController.dart';
+import '../../Theme/Colors.dart';
 
 class OtpVerificationPage extends GetView<AuthController> {
   const OtpVerificationPage({super.key});
@@ -73,7 +73,7 @@ class OtpVerificationPage extends GetView<AuthController> {
 
             // Countdown Timer
             Obx(
-              () => Row(
+                  () => Row(
                 children: [
                   const Text(
                     "Send code again ",
@@ -142,81 +142,81 @@ class OtpVerificationPage extends GetView<AuthController> {
 
             // Verify Button
             Obx(
-              () =>
-                  controller.isLoading.value
-                      ? Center(
-                        child: CircularProgressIndicator(
-                          color: AppColors.textColor,
-                        ),
-                      )
-                      : GestureDetector(
-                        onTap: controller.verifyOTP,
-                        child: Center(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 14,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.getStartBackground,
-                              borderRadius: BorderRadius.circular(40),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Text(
-                                  "Get Started",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 22,
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: AppColors.textColor,
-                                ),
-                                Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: AppColors.textColor.withOpacity(0.8),
-                                ),
-                                Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: AppColors.textColor.withOpacity(0.6),
-                                ),
-                                Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: AppColors.textColor.withOpacity(0.4),
-                                ),
-                                const SizedBox(width: 10),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: LinearGradient(
-                                      colors: AppColors.buttonGradient,
-                                      begin: Alignment.topLeft,
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: AppColors.textColor.withOpacity(
-                                          0.3,
-                                        ),
-                                        blurRadius: 10,
-                                        spreadRadius: 4,
-                                      ),
-                                    ],
-                                  ),
-                                  padding: const EdgeInsets.all(8),
-                                  child: const Icon(
-                                    Icons.arrow_forward_ios,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
+                  () =>
+              controller.isLoading.value
+                  ? Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.textColor,
+                ),
+              )
+                  : GestureDetector(
+                onTap: controller.verifyOTP,
+                child: Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 14,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.getStartBackground,
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                          "Get Started",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
                           ),
                         ),
-                      ),
+                        const SizedBox(width: 10),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: AppColors.textColor,
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: AppColors.textColor.withOpacity(0.8),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: AppColors.textColor.withOpacity(0.6),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: AppColors.textColor.withOpacity(0.4),
+                        ),
+                        const SizedBox(width: 10),
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: LinearGradient(
+                              colors: AppColors.buttonGradient,
+                              begin: Alignment.topLeft,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.textColor.withOpacity(
+                                  0.3,
+                                ),
+                                blurRadius: 10,
+                                spreadRadius: 4,
+                              ),
+                            ],
+                          ),
+                          padding: const EdgeInsets.all(8),
+                          child: const Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),

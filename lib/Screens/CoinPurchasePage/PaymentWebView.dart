@@ -1,7 +1,8 @@
-import 'package:bathao/Theme/Colors.dart';
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../Theme/Colors.dart';
 
 class PaymentWebView extends StatefulWidget {
   final String paymentUrl;

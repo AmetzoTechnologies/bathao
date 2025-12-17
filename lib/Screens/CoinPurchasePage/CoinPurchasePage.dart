@@ -1,12 +1,13 @@
-import 'package:bathao/Controllers/AuthController/AuthController.dart';
-import 'package:bathao/Controllers/PaymentController/PaymentController.dart';
-import 'package:bathao/Screens/CoinPurchasePage/PurchaseHistoryPage.dart';
-import 'package:bathao/Theme/Colors.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../../Controllers/AuthController/AuthController.dart';
+import '../../Controllers/PaymentController/PaymentController.dart';
 import '../../Models/plan_model/plan.dart';
+import '../../Theme/Colors.dart';
+import 'PurchaseHistoryPage.dart';
 
 class CoinPurchasePage extends StatelessWidget {
   CoinPurchasePage({super.key});
