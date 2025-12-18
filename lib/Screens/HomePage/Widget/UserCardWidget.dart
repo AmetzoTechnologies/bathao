@@ -153,7 +153,11 @@ class UserCard extends StatelessWidget {
                 const SizedBox(height: 2),
                 Row(
                   children: [
-                    Icon(Icons.person, size: iconSize, color: Colors.grey),
+                    Icon(
+                      gender == "male" ? Icons.man : Icons.woman,
+                      color: Colors.white,
+                      size: 18,
+                    ),
                     const SizedBox(width: 4),
                     Text(
                       "$age age",

@@ -46,7 +46,7 @@ class CoinPurchasePage extends StatelessWidget {
                   // Available Coins Card
                   Expanded(
                   child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
                       colors: [
@@ -65,21 +65,23 @@ class CoinPurchasePage extends StatelessWidget {
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       const Text(
                         "Available Coins",
                         style: TextStyle(
-                          color: Colors.white70,
+                          color: Colors.white,
                           fontSize: 12,
+                           // 👈 reduces top/bottom text spacing
                         ),
                       ),
-                      const SizedBox(height: 4),
                       Text(
                         "${totalCoin.value}",
                         style: const TextStyle(
                           color: Colors.greenAccent,
                           fontWeight: FontWeight.bold,
                           fontSize: 24,
+   height: 1.0
                         ),
                       ),
                     ],
@@ -94,7 +96,7 @@ class CoinPurchasePage extends StatelessWidget {
                 },
                 borderRadius: BorderRadius.circular(14),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
 
                     gradient: const LinearGradient(
@@ -118,7 +120,8 @@ class CoinPurchasePage extends StatelessWidget {
                       const Icon(
                         Icons.history,
                         color: Colors.white,
-                        size: 28,
+                        size: 24,
+
                       ),
                       const SizedBox(height: 6),
                       const Text(
@@ -127,6 +130,7 @@ class CoinPurchasePage extends StatelessWidget {
                           color: Colors.white,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
+                          height: 1.0
                         ),
                       ),
                     ],
@@ -159,8 +163,8 @@ class CoinPurchasePage extends StatelessWidget {
                 sliver: SliverGrid(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 13,
+                    mainAxisSpacing: 24,
                     childAspectRatio: 1.2,
                   ),
                   delegate: SliverChildBuilderDelegate((context, index) {
@@ -255,8 +259,8 @@ class CoinPurchasePage extends StatelessWidget {
           children: [
             if (pkg.description != null)
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                margin: const EdgeInsets.only(bottom: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                margin: const EdgeInsets.only(bottom: 2),
                 decoration: BoxDecoration(
                   color: Colors.greenAccent.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(12),

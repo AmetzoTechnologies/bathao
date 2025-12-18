@@ -126,9 +126,11 @@ class HomePage extends StatelessWidget {
       },
 
       events: ZegoUIKitPrebuiltCallEvents(
+
         room: ZegoCallRoomEvents(
           onStateChanged: callTracker.onRoomStateChanged,
         ),
+
         onCallEnd: callTracker.onCallEnd,
       ),
       invitationEvents: ZegoUIKitPrebuiltCallInvitationEvents(
@@ -281,7 +283,7 @@ class HomePage extends StatelessWidget {
                                             ),
                                             const SizedBox(height: 2),
                                             Text(
-                                              "welcome Bathao",
+                                              "Welcome to Bathao",
                                               style: TextStyle(
                                                 color: Colors.white70,
                                                 fontSize: screenWidth * 0.035,

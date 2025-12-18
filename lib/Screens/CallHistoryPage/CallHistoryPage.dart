@@ -600,190 +600,205 @@ class _CallHistoryPageState extends State<CallHistoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.scaffoldColor,
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color(0xFFB7C0EF),
+          Color(0xff8fb3dc),
+            Color(0xFF9BA4CC),
 
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF000D64),
-        centerTitle: true,
-        title: const Text(
-          "Call History",
-          style: TextStyle(fontSize: 18,color:  Colors.white),
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
         ),
       ),
 
-      body: Obx(() {
-        final data = controller.historyData;
+      child: Scaffold(
+        backgroundColor: AppColors.scaffoldColor,
 
-        if (controller.isLoading.value && data.isEmpty) {
-          return const Center(child: CircularProgressIndicator());
-        }
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF000D64),
+          centerTitle: true,
+          title: const Text(
+            "Call History",
+            style: TextStyle(fontSize: 18,color:  Colors.white),
+          ),
+        ),
 
-        if (!controller.isLoading.value && data.isEmpty) {
+        body: Obx(() {
+          final data = controller.historyData;
+
+          if (controller.isLoading.value && data.isEmpty) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (!controller.isLoading.value && data.isEmpty) {
+            return RefreshIndicator(
+              onRefresh: _refresh,
+              child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: const [
+                  SizedBox(height: 200),
+                  Center(
+                    child: Text(
+                      "No call history yet",
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+
           return RefreshIndicator(
             onRefresh: _refresh,
-            child: ListView(
+            child: ListView.builder(
+              controller: scrollController,
               physics: const AlwaysScrollableScrollPhysics(),
-              children: const [
-                SizedBox(height: 200),
-                Center(
-                  child: Text(
-                    "No call history yet",
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+              padding: const EdgeInsets.only(bottom: 90 ,top: 10),
+
+              itemCount: data.length + (controller.hasMore.value ? 1 : 0),
+              itemBuilder: (context, index) {
+                if (index == data.length) {
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+
+                final h = data[index];
+                final rec = h.receiver;
+                final name = rec?.displayName ?? "Unknown";
+                final pic = rec?.profilePic ?? "";
+
+                final type = h.callType ?? "";
+                final mins = h.minutesCharged ?? "";
+                final dt = DateTime.tryParse(h.createdAt.toString())?.toLocal() ?? DateTime.now();
+                final time = TimeOfDay.fromDateTime(dt).format(context);
+
+                return Container(
+                  margin: EdgeInsets.only(
+                    bottom: marginBottom,
+                    left: 16,
+                    right: 16,
                   ),
-                ),
-              ],
-            ),
-          );
-        }
-
-        return RefreshIndicator(
-          onRefresh: _refresh,
-          child: ListView.builder(
-            controller: scrollController,
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.only(bottom: 90 ,top: 10),
-
-            itemCount: data.length + (controller.hasMore.value ? 1 : 0),
-            itemBuilder: (context, index) {
-              if (index == data.length) {
-                return const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  child: Center(child: CircularProgressIndicator()),
-                );
-              }
-
-              final h = data[index];
-              final rec = h.receiver;
-              final name = rec?.displayName ?? "Unknown";
-              final pic = rec?.profilePic ?? "";
-
-              final type = h.callType ?? "";
-              final mins = h.minutesCharged ?? "";
-              final dt = DateTime.tryParse(h.createdAt.toString())?.toLocal() ?? DateTime.now();
-              final time = TimeOfDay.fromDateTime(dt).format(context);
-
-              return Container(
-                margin: EdgeInsets.only(
-                  bottom: marginBottom,
-                  left: 16,
-                  right: 16,
-                ),
-                padding: EdgeInsets.all(padding),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0xFF000000),
-                      Color(0xFF0a192f),
-                      Color(0xFF112240),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-
-                child: Row(
-                  children: [
-                    // --- Avatar
-                    Stack(
-                      children: [
-                        CircleAvatar(
-                          radius: radius,
-                          backgroundColor: pic.isEmpty ? randomColor() : Colors.transparent,
-                          backgroundImage:
-                          pic.isNotEmpty ? NetworkImage("$baseImageUrl$pic") : null,
-                          child: pic.isEmpty
-                              ? Text(
-                            name.isNotEmpty ? name[0].toUpperCase() : "?",
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
-                              : null,
-                        ),
-
-                        // dot
-                        Positioned(
-                          bottom: 2,
-                          right: 2,
-                          child: Container(
-                            width: dotSize,
-                            height: dotSize,
-                            decoration: const BoxDecoration(
-                              color: Colors.greenAccent,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                        ),
+                  padding: EdgeInsets.all(padding),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color(0xFF000000),
+                        Color(0xFF0a192f),
+                        Color(0xFF112240),
                       ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
 
-                    const SizedBox(width: 8),
-
-                    // --- Middle Text
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
+                    children: [
+                      // --- Avatar
+                      Stack(
                         children: [
-                          Text(
-                            name,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: fontMain,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
+                          CircleAvatar(
+                            radius: radius,
+                            backgroundColor: pic.isEmpty ? randomColor() : Colors.transparent,
+                            backgroundImage:
+                            pic.isNotEmpty ? NetworkImage("$baseImageUrl$pic") : null,
+                            child: pic.isEmpty
+                                ? Text(
+                              name.isNotEmpty ? name[0].toUpperCase() : "?",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                                : null,
                           ),
 
-                          const SizedBox(height: 2),
-                          Text(
-                            "$type • $mins mins",
-                            style: TextStyle(
-                              fontSize: fontSub,
-                              color: AppColors.borderColor,
+                          // dot
+                          Positioned(
+                            bottom: 2,
+                            right: 2,
+                            child: Container(
+                              width: dotSize,
+                              height: dotSize,
+                              decoration: const BoxDecoration(
+                                color: Colors.greenAccent,
+                                shape: BoxShape.circle,
+                              ),
                             ),
                           ),
                         ],
                       ),
-                    ),
 
-                    // --- Right date/time
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          formatCallDate(dt),
-                          style: TextStyle(
-                            fontSize: fontSub,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.textColor,
-                          ),
+                      const SizedBox(width: 8),
+
+                      // --- Middle Text
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: fontMain,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+
+                            const SizedBox(height: 2),
+                            Text(
+                              "$type • $mins mins",
+                              style: TextStyle(
+                                fontSize: fontSub,
+                                color: AppColors.borderColor,
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          time,
-                          style: const TextStyle(
-                            fontSize: 11,
-                            color: Colors.red,
+                      ),
+
+                      // --- Right date/time
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            formatCallDate(dt),
+                            style: TextStyle(
+                              fontSize: fontSub,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.textColor,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        );
-      }),
+                          const SizedBox(height: 4),
+                          Text(
+                            time,
+                            style: const TextStyle(
+                              fontSize: 11,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          );
+        }),
+      ),
     );
   }
 }

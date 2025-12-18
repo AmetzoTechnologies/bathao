@@ -56,6 +56,9 @@ class PaymentController extends GetxController {
   Future<void> refreshBalance() async {
     await getCoin();
   }
+  Future<void> refreshPurchaseHistory() async {
+    await getRechargeHistory();
+  }
 
 
   Future<bool> verifyPaymentStatus(String orderId) async {
