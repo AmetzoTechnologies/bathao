@@ -68,7 +68,7 @@ class _OnBoardScreensState extends State<OnBoardScreens> {
             ),
           ),
 
-          /// PAGE 3
+          /// PAGE
           Obx(
                 () => OnBoardPage(
               imagePath: 'assets/onboarding_3.png',

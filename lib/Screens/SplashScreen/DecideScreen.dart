@@ -43,7 +43,7 @@ class DecideScreen extends StatelessWidget {
           );
         } else if (snapshot.hasError) {
           // Log error and fallback to login
-          print('Error during checkAuth: ${snapshot.error}');
+          print('Error during  checkAuth: ${snapshot.error}');
           return LoginPage();
         } else if (snapshot.hasData) {
           return snapshot.data!;
