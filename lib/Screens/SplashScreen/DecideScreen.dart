@@ -1,10 +1,11 @@
-import 'package:bathao/Controllers/AuthController/RegisterController.dart';
-import 'package:bathao/Theme/Colors.dart';
-import 'package:bathao/Widgets/MainPage/MainPage.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../Controllers/AuthController/AuthController.dart';
+import '../../Controllers/AuthController/RegisterController.dart';
+import '../../Theme/Colors.dart';
+import '../../Widgets/MainPage/MainPage.dart';
 import '../AuthPage/LoginPage.dart';
 import '../HomePage/HomePage.dart';
 import '../UpdateScreen/UpdateScreen.dart';
@@ -42,7 +43,7 @@ class DecideScreen extends StatelessWidget {
           );
         } else if (snapshot.hasError) {
           // Log error and fallback to login
-          print('Error during checkAuth: ${snapshot.error}');
+          print('Error during  checkAuth: ${snapshot.error}');
           return LoginPage();
         } else if (snapshot.hasData) {
           return snapshot.data!;

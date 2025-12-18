@@ -1,124 +1,123 @@
-import 'package:bathao/Controllers/AuthController/RegisterController.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/material.dart';
+ import 'package:get/get.dart';
 
 import '../../Models/listners_model/listners_model.dart';
 import '../../Models/listners_model/receiver.dart';
-import '../../Screens/AuthPage/LoginPage.dart';
 import '../../Services/ApiService.dart';
+import '../AuthController/RegisterController.dart';
 
-// Update path if needed
+// Global reactive values
 RxInt audioRate = 0.obs;
 RxInt videoRate = 0.obs;
 
 class ListenerController extends GetxController {
+  final ApiService _apiService = ApiService();
+
   List<Receiver> listenerData = [];
   bool isLoading = false;
   bool hasMore = true;
-  int currentPage = 1; // Start from page 0
-  final int limit = 10;
-  List langs = [];
 
-  final ApiService _apiService = ApiService();
+  int page = 1;
+  final int limit = 70;
 
+  List<String> langs = [];
   String searchQuery = '';
   String sortOrder = '';
 
-  late ListenersModel dataModel = ListenersModel();
-
   @override
-  void onInit() async {
+  void onInit() {
     super.onInit();
-    await getCallRate();
-    await fetchListeners();
+    // One single unified load
+    loadInitialData();
   }
 
-  Future getCallRate() async {
-    final endpoint = "api/v1/user/get-user-cost";
+  Future<void> loadInitialData() async {
+    await getCallRate();
+    await fetchListeners(reset: true);
+  }
+
+  Future<void> getCallRate() async {
     try {
-      final response = await _apiService.getRequest(
-        endpoint,
+      final res = await _apiService.getRequest(
+        "api/v1/user/get-user-cost",
         bearerToken: jwsToken,
       );
-      if (response.isOk) {
-        audioRate.value = response.body['audio'];
-        videoRate.value = response.body['video'];
+      if (res.isOk) {
+        audioRate.value = res.body['audio'];
+        videoRate.value = res.body['video'];
       } else {
-        print(response.body);
+        print("getCallRate error ${res.body}");
       }
     } catch (e) {
-      print(e);
-      rethrow;
+      print("getCallRate err: $e");
     }
   }
 
-  Future<void> fetchListeners() async {
-    if (isLoading || !hasMore) return;
+  Future<void> fetchListeners({bool reset = false}) async {
+    if (isLoading) return;
+
+    if (reset) {
+      listenerData.clear();
+      hasMore = true;
+      page = 1;
+    }
+
+    if (!hasMore) return;
 
     isLoading = true;
-    update(); // Rebuild the UI
+    update();
 
     try {
-      final response = await _apiService.getRequest(
-        'api/v1/user/get-receivers?page=$currentPage&limit=$limit'
-        '&sortOrder=$sortOrder&search=$searchQuery'
-        '&langs=${langs.join(',')}',
+      final res = await _apiService.getRequest(
+        "api/v1/user/get-receivers"
+            "?page=$page"
+            "&limit=$limit"
+            "&sortOrder=$sortOrder"
+            "&search=$searchQuery"
+            "&langs=${langs.join(',')}",
         bearerToken: jwsToken,
       );
 
-      if (response.isOk) {
-        print(response.body);
-        final data = ListenersModel.fromJson(response.body);
-        print(data);
+      if (res.isOk) {
+        ListenersModel model = ListenersModel.fromJson(res.body);
 
-        final newListeners = data.receivers ?? [];
-        listenerData.addAll(newListeners);
-        if (newListeners.length < limit) {
+        final newItems = model.receivers ?? [];
+
+        listenerData.addAll(newItems);
+
+        if (newItems.length < limit) {
           hasMore = false;
         } else {
-          currentPage++;
+          page++;
         }
-        print("Fetched Listeners: ${listenerData.length}");
       } else {
         hasMore = false;
-        // if (response.body['error'] == 'jwt expired' ||
-        //     response.body['error'] == 'invalid token') {
-        //   SharedPreferences pref = await SharedPreferences.getInstance();
-        //   pref.clear();
-        //   Get.offAll(() => LoginPage());
-        // }
-        print("Error response: ${response.body}");
+        print("fetchListeners error: ${res.body}");
       }
     } catch (e) {
-      print("Fetch error: $e");
+      print("fetchListeners err: $e");
       hasMore = false;
     }
 
     isLoading = false;
-    update(); // Refresh UI
+    update();
   }
 
   Future<void> refreshListeners() async {
-    listenerData.clear();
-    currentPage = 0;
-    hasMore = true;
-    await fetchListeners();
+    await fetchListeners(reset: true);
   }
 
-  Future<void> applySorting(String type) async {
-    switch (type) {
-      case "Oldest":
-        sortOrder = "oldest";
-        break;
-      default:
-        sortOrder = '';
-    }
-    await refreshListeners();
+  void updateSearch(String value) {
+    searchQuery = value;
+    refreshListeners();
   }
 
-  void updateSearchQuery(String query) {
-    searchQuery = query;
+  Future<void> updateSort(String sort) async {
+    sortOrder = sort;
+    refreshListeners();
+  }
+
+  void updateLangs(List<String> values) {
+    langs = values;
     refreshListeners();
   }
 }

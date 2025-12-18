@@ -1,7 +1,7 @@
-import 'package:bathao/Controllers/AuthController/RegisterController.dart';
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../Controllers/AuthController/RegisterController.dart';
 import '../../Theme/Colors.dart';
 
 class StickerPickerPage extends StatelessWidget {

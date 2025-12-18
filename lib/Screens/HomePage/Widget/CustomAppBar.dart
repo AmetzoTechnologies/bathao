@@ -1,8 +1,9 @@
-import 'package:bathao/Screens/CoinPurchasePage/CoinPurchasePage.dart';
-import 'package:bathao/Theme/Colors.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../Theme/Colors.dart';
+import '../../CoinPurchasePage/CoinPurchasePage.dart';
 import 'ProfileConnectPainter.dart';
 
 class CustomHomeAppBar extends StatelessWidget {

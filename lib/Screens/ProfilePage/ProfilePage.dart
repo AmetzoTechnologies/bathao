@@ -1,14 +1,16 @@
-import 'package:bathao/Controllers/AuthController/AuthController.dart';
-import 'package:bathao/Controllers/ProfileController/ProfileController.dart';
-import 'package:bathao/Screens/AuthPage/LoginPage.dart';
-import 'package:bathao/Screens/StickerPickerPage/StickerPickerPage.dart';
-import 'package:bathao/Services/ApiService.dart';
-import 'package:bathao/Theme/Colors.dart';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../Controllers/AuthController/AuthController.dart';
+import '../../Controllers/ProfileController/ProfileController.dart';
+import '../../Services/ApiService.dart';
+import '../../Theme/Colors.dart';
+import '../AuthPage/LoginPage.dart';
+import '../StickerPickerPage/StickerPickerPage.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
@@ -111,9 +113,13 @@ class ProfilePage extends StatelessWidget {
                       ),
 
                       Text(
-                        userModel!.user!.phone!,
+                       controller.formatPhone(
+                          userModel!.user!.countryCode ?? "",
+                          userModel!.user!.phone ?? "",
+                        ),
                         style: TextStyle(fontSize: 14, color: Colors.white70),
-                      ),
+                      )
+                      ,
                     ],
                   ),
                 ],
@@ -249,14 +255,23 @@ class ProfilePage extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+
+        padding: const EdgeInsets.all(6),
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical:15),
           decoration: BoxDecoration(
-            color: AppColors.onBoardSecondary,
-            borderRadius: BorderRadius.circular(16),
+            gradient: const LinearGradient(
+              colors: [
+                Color(0xFF000000),
+                Color(0xFF0a192f),
+                Color(0xFF112240),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(14),
           ),
           child: Row(
             children: [

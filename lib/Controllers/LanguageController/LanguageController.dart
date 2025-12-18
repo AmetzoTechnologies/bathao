@@ -1,5 +1,6 @@
-import 'package:bathao/Controllers/ListenerController/ListenerController.dart';
-import 'package:get/get.dart';
+ import 'package:get/get.dart';
+
+import '../ListenerController/ListenerController.dart';
 
 class LanguageController extends GetxController {
   // Rx list to track selected languages
@@ -20,3 +21,5 @@ class LanguageController extends GetxController {
 
   bool isSelected(String lang) => selectedLanguages.contains(lang);
 }
+
+

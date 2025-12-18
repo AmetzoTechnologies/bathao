@@ -1,57 +1,43 @@
-import 'package:bathao/Controllers/AuthController/RegisterController.dart';
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:linear_progress_bar/linear_progress_bar.dart';
-
+import '../../Controllers/AuthController/DynamicControlller.dart';
 import '../../Theme/Colors.dart';
+import '../../Controllers/AuthController/RegisterController.dart';
+import '../../Controllers/LanguageController/LanguageController.dart';
 
 class LanguageSelectionPage extends StatelessWidget {
   final String phoneNumber;
   final String name;
   final String countryCode;
+
   LanguageSelectionPage({
     super.key,
     required this.phoneNumber,
     required this.name,
     required this.countryCode,
   });
-  final List<Map<String, dynamic>> languages = [
-    {
-      "title": "Arabic",
-      "bgColor": Colors.red,
-      "text": "العربية",
-      'isSelected': false.obs,
-    },
-    {
-      "title": "Malayalam",
-      "bgColor": Colors.lightBlue,
-      "text": "മ",
-      'isSelected': false.obs,
-    },
-    {
-      "title": "Tamil",
-      "bgColor": Colors.black,
-      "text": "அ",
-      'isSelected': false.obs,
-    },
-    {
-      "title": "Hindi",
-      "bgColor": Colors.green,
-      "text": "श्री",
-      'isSelected': false.obs,
-    },
-    {
-      "title": "English",
-      "bgColor": Colors.blue,
-      "text": "En",
-      'isSelected': false.obs,
-    },
-  ];
-  RxList<RxBool> langList =
-      <RxBool>[false.obs, false.obs, false.obs, false.obs, false.obs].obs;
-  final RegisterController controller = Get.find();
+
+  // CONTROLLERS
+  final langController = Get.put( Dynamiccontrolller());
+  final registerController = Get.find<RegisterController>();
+
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final isSmallScreen = size.width < 360;
+    final isMediumScreen = size.width >= 360 && size.width < 600;
+    final isLargeScreen = size.width >= 600;
+
+    // Responsive values
+    final horizontalPadding = isSmallScreen ? 12.0 : (isMediumScreen ? 16.0 : 24.0);
+    final titleFontSize = isSmallScreen ? 24.0 : (isMediumScreen ? 28.0 : 32.0);
+    final subtitleFontSize = isSmallScreen ? 13.0 : (isMediumScreen ? 15.0 : 17.0);
+    final crossAxisCount = isLargeScreen ? 3 : 2;
+    final gridItemSize = isSmallScreen ? 100.0 : (isMediumScreen ? 120.0 : 140.0);
+    final iconSize = isSmallScreen ? 24.0 : (isMediumScreen ? 28.0 : 32.0);
+    final buttonFontSize = isSmallScreen ? 18.0 : (isMediumScreen ? 20.0 : 22.0);
+
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -64,179 +50,213 @@ class LanguageSelectionPage extends StatelessWidget {
           ),
         ),
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 10,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: LinearProgressBar(
-                        maxSteps: 2,
-                        progressType:
-                            LinearProgressBar
-                                .progressTypeLinear, // Use Linear progress
-                        currentStep: 2,
-                        progressColor: AppColors.progressBarColor,
-                        backgroundColor: AppColors.progressBarBackground,
-                        borderRadius: BorderRadius.circular(10), //  NEW
-                      ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: horizontalPadding,
+                      vertical: 12,
                     ),
-                    Text(
-                      "Choose your language",
-                      style: TextStyle(fontSize: 29),
-                    ),
-                    Text(
-                      'Choose your language for a personalized experience.',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    SizedBox(height: 10),
-                    GridView.builder(
-                      shrinkWrap: true,
-                      itemCount: languages.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 1.3,
-                      ),
-                      itemBuilder: (context, index) {
-                        final lang = languages[index];
-
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // -----------------------
+                        // HEADER + PROGRESS
+                        // -----------------------
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Obx(
-                              () => InkWell(
-                                onTap: () {
-                                  // Optional: single selection logic
-                                  langList[index].value =
-                                      !langList[index].value;
-                                  if (controller.languages.contains(
-                                    languages[index]['title'],
-                                  )) {
-                                    controller.languages.remove(
-                                      languages[index]['title'],
-                                    );
-                                  } else {
-                                    controller.languages.add(
-                                      languages[index]['title'],
-                                    );
-                                  }
-                                  print(controller.languages);
-                                },
-                                child: Container(
-                                  height: 120,
-                                  width: 120,
-                                  decoration: BoxDecoration(
-                                    color: lang['bgColor'],
-                                    border:
-                                        langList[index].value
-                                            ? Border.all(
-                                              color: AppColors.textColor,
-                                              width: 4,
-                                            )
-                                            : null,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    lang['text'],
-                                    style: TextStyle(
-                                      fontSize: 28,
-                                      color: lang['textColor'] ?? Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
+                            LinearProgressBar(
+                              maxSteps: 2,
+                              currentStep: 2,
+                              progressType: LinearProgressBar.progressTypeLinear,
+                              progressColor: AppColors.progressBarColor,
+                              backgroundColor: AppColors.progressBarBackground,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            SizedBox(height: isSmallScreen ? 12 : 15),
+                            Text(
+                              "Choose your language",
+                              style: TextStyle(
+                                fontSize: titleFontSize,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                             SizedBox(height: 8),
                             Text(
-                              lang['title'],
-                              style: TextStyle(color: Colors.white),
+                              "Choose your language for a personalized experience.",
+                              style: TextStyle(
+                                fontSize: subtitleFontSize,
+                                color: Colors.white70,
+                                height: 1.3,
+                              ),
                             ),
+                            SizedBox(height: isSmallScreen ? 12 : 15),
                           ],
-                        );
-                      },
-                    ),
-                  ],
-                ),
-                InkWell(
-                  onTap: () {
-                    controller.registerUser(name, phoneNumber, countryCode);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 14),
-                    decoration: BoxDecoration(
-                      color: AppColors.getStartBackground,
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          "Continue",
-                          style: TextStyle(color: Colors.white, fontSize: 22),
                         ),
-                        SizedBox(width: 10),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          color: AppColors.textColor,
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          color: AppColors.textColor.withOpacity(0.8),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          color: AppColors.textColor.withOpacity(0.6),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          color: AppColors.textColor.withOpacity(0.4),
-                        ),
-                        SizedBox(width: 10),
-                        Obx(
-                          () =>
-                              controller.isLoading.value
-                                  ? CircularProgressIndicator(
-                                    color: AppColors.progressBarColor,
-                                  )
-                                  : Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      gradient: LinearGradient(
-                                        colors: AppColors.buttonGradient,
-                                        begin: Alignment.topLeft,
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: AppColors.textColor.withValues(
-                                            alpha: 0.30,
-                                          ),
-                                          blurRadius: 10,
-                                          spreadRadius: 4,
+
+                        // -----------------------
+                        // LANGUAGES GRID (API)
+                        // -----------------------
+                        Obx(() {
+                          if (langController.isLoading.value) {
+                            return SizedBox(
+                              height: size.height * 0.5,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: AppColors.textColor,
+                                ),
+                              ),
+                            );
+                          }
+
+                          return GridView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: langController.languages.length,
+                            padding: EdgeInsets.symmetric(vertical: 8),
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: crossAxisCount,
+                              crossAxisSpacing: isSmallScreen ? 8 : 10,
+                              mainAxisSpacing: isSmallScreen ? 8 : 10,
+                              childAspectRatio: isSmallScreen ? 1.1 : 1.15,
+                            ),
+                            itemBuilder: (context, index) {
+                              final lang = langController.languages[index];
+                              return Obx(() {
+                                final isSelected = langController.langSelected[index].value;
+                                return InkWell(
+                                  onTap: () {
+                                    langController.toggleSelection(index);
+                                    final title = lang['title'];
+                                    if (registerController.languages
+                                        .contains(title.toString().toLowerCase())) {
+                                      registerController.languages
+                                          .remove(title.toString().toLowerCase());
+                                    } else {
+                                      registerController.languages
+                                          .add(title.toString().toLowerCase());
+                                    }
+                                    print("REGISTER LANGUAGES → ${registerController.languages}");
+                                  },
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        height: gridItemSize,
+                                        width: gridItemSize,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: langController.parseColor(lang['bgColor']),
+                                          border: isSelected
+                                              ? Border.all(
+                                            color: AppColors.textColor,
+                                            width: isSmallScreen ? 3 : 4,
+                                          )
+                                              : null,
+                                          borderRadius: BorderRadius.circular(12),
                                         ),
-                                      ],
-                                    ),
-                                    padding: EdgeInsets.all(8),
-                                    child: Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Colors.white,
-                                    ),
+                                        child: Text(
+                                          lang['icon'],
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: iconSize,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 6),
+                                      Text(
+                                        lang['title'],
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: isSmallScreen ? 12 : 14,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
                                   ),
+                                );
+                              });
+                            },
+                          );
+                        }),
+
+                        SizedBox(height: 16),
+
+                        // -----------------------
+                        // CONTINUE BUTTON
+                        // -----------------------
+                        Center(
+                          child: InkWell(
+                            onTap: () {
+                              registerController.registerUser(
+                                name,
+                                phoneNumber,
+                                countryCode,
+                              );
+                            },
+                            borderRadius: BorderRadius.circular(40),
+                            child: Obx(() {
+                              return Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: isSmallScreen ? 24 : 32,
+                                  vertical: isSmallScreen ? 12 : 14,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.getStartBackground,
+                                  borderRadius: BorderRadius.circular(40),
+                                ),
+                                child: registerController.isLoading.value
+                                    ? SizedBox(
+                                  height: 24,
+                                  width: 24,
+                                  child: CircularProgressIndicator(
+                                    color: AppColors.progressBarColor,
+                                    strokeWidth: 2.5,
+                                  ),
+                                )
+                                    : Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      "Continue",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: buttonFontSize,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    SizedBox(width: 10),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: AppColors.textColor,
+                                      size: isSmallScreen ? 18 : 20,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }),
+                          ),
                         ),
+
+                        SizedBox(height: 8),
                       ],
                     ),
                   ),
                 ),
-              ],
-            ),
+              );
+            },
           ),
         ),
       ),

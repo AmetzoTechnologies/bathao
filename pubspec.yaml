@@ -1,4 +1,4 @@
-name: bathao
+name: Bathao
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -39,18 +39,21 @@ dependencies:
   image_picker: ^1.1.2
   screen_secure: ^1.0.3
   shared_preferences: ^2.5.3
-  zego_uikit_prebuilt_call: ^4.17.3
+  zego_uikit_prebuilt_call: ^4.22.1
   floating_bottom_navigation_bar: ^1.5.2
   url_launcher: ^6.3.1
-  zego_uikit_signaling_plugin: ^2.8.13
-  zego_uikit: ^2.28.5
+  zego_uikit_signaling_plugin: ^2.8.19
+  zego_uikit: ^2.28.23
   get: ^4.7.2
+  flutter_svg: ^2.0.9
   flutter:
     sdk: flutter
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  flutter_screenutil: ^5.9.3
+  easy_refresh: ^3.4.0
 
 dev_dependencies:
   flutter_test:
@@ -62,6 +65,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.14.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -78,7 +82,12 @@ flutter:
   assets:
     - assets/
     - assets/stickers/
+    - assets/icons/coin.svg
   #   - images/a_dot_ham.jpeg
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: assets/logo_app.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

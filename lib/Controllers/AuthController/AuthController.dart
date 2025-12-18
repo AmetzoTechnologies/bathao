@@ -1,16 +1,18 @@
-import 'package:bathao/Controllers/AuthController/RegisterController.dart';
-import 'package:bathao/Models/user_model.dart';
-import 'package:bathao/Models/user_model/user_model.dart';
-import 'package:bathao/Screens/AuthPage/LoginPage.dart';
-import 'package:bathao/Screens/AuthPage/OtpVerfyPage.dart';
-import 'package:bathao/Screens/AuthPage/RegsterPage.dart';
-import 'package:bathao/Screens/HomePage/HomePage.dart';
-import 'package:bathao/Services/ApiService.dart';
-import 'package:bathao/Theme/Colors.dart';
-import 'package:bathao/Widgets/MainPage/MainPage.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../Models/user_model/user_model.dart';
+import '../../Screens/AuthPage/LoginPage.dart';
+import '../../Screens/AuthPage/OtpVerfyPage.dart';
+import '../../Screens/AuthPage/RegsterPage.dart';
+import '../../Services/ApiService.dart';
+import '../../Theme/Colors.dart';
+import '../../Widgets/MainPage/MainPage.dart';
+import '../ListenerController/ListenerController.dart';
+import 'RegisterController.dart';
+import 'call_init_service.dart';
 
 UserDataModel? userModel;
 
@@ -30,6 +32,8 @@ class AuthController extends GetxController {
     super.onInit();
     startTimer();
   }
+
+
 
   Future<bool> checkAppVersion() async {
     final endpoint = "api/v1/user/get-app-version";
@@ -89,7 +93,26 @@ class AuthController extends GetxController {
           SharedPreferences preferences = await SharedPreferences.getInstance();
           preferences.setString("token", token!);
           jwsToken = token;
+
+          print("✅ Token saved: ${jwsToken?.substring(0, 20)}...");
+
+          // Get user data first
           await getUserData();
+
+          // Initialize Zego
+          await initZegoCallService(
+            userId: userModel!.user!.id!,
+            userName: userModel!.user!.name!,
+          );
+
+// Initialize ListenerController
+          if (!Get.isRegistered<ListenerController>()) {
+            Get.put(ListenerController());
+          } else {
+            Get.find<ListenerController>().refreshListeners();
+          }
+
+          // Now navigate to MainPage with data already loaded
           Get.offAll(MainPage());
         } else {
           Get.to(
@@ -110,6 +133,7 @@ class AuthController extends GetxController {
         print(response.body);
       }
     } catch (e) {
+      print("❌ Error in verifyOTP: $e");
       rethrow;
     } finally {
       isLoading.value = false;

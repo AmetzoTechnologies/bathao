@@ -1,13 +1,15 @@
 import 'dart:io';
 
-import 'package:bathao/Controllers/AuthController/AuthController.dart';
-import 'package:bathao/Controllers/AuthController/RegisterController.dart';
-import 'package:bathao/Models/user_model/user_model.dart';
-import 'package:bathao/Services/ApiService.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../../Models/user_model/user_model.dart';
+import '../../Services/ApiService.dart';
+import '../AuthController/AuthController.dart';
+import '../AuthController/RegisterController.dart';
 
 class ProfileController extends GetxController {
   var name = ''.obs;
@@ -15,6 +17,13 @@ class ProfileController extends GetxController {
   var pickedImage = Rx<File?>(null);
   final ApiService _apiService = ApiService();
   final ImagePicker _picker = ImagePicker();
+
+  String formatPhone(String? cc, String? phone) {
+    final c = cc ?? "";
+    final p = phone ?? "";
+    if (p.length <= 5) return "$c $p";
+    return "$c ${p.substring(0, 5)} ${p.substring(5)}";
+  }
 
   void setName(String newName) async {
     await updateProfileName(newName);

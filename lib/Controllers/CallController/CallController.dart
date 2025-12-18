@@ -1,9 +1,11 @@
-import 'package:bathao/Controllers/AuthController/AuthController.dart';
-import 'package:bathao/Controllers/AuthController/RegisterController.dart';
-import 'package:bathao/Controllers/PaymentController/PaymentController.dart';
-import 'package:bathao/Services/ApiService.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../Services/ApiService.dart';
+import '../AuthController/AuthController.dart';
+import '../AuthController/RegisterController.dart';
+import '../PaymentController/PaymentController.dart';
 
 class CallController extends GetxController {
   final ApiService _apiService = ApiService();
@@ -27,25 +29,25 @@ class CallController extends GetxController {
         data,
       );
       if (response.isOk) {
-        print("call created");
+        // print("call created");
       } else {
-        print(response.body);
+        // print(response.body);
       }
     } catch (e) {
-      print(e);
+      // print(e);/**/
       rethrow;
     }
   }
 
   Future startCall(String receiverId, String callType) async {
     final endpoint = 'api/v1/call/start-call';
-    print(receiverId);
-    print(callType);
+    // print(receiverId);
+    // print(callType);
     final data = {"receiverId": receiverId, "callType": callType};
     try {
-      print(
-        "ssjasjdhdjkhghjhhhhhhhhhllllaaasssnnnnsnnwnwnnwnwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
-      );
+      // print(
+      //   "ssjasjdhdjkhghjhhhhhhhhhllllaaasssnnnnsnnwnwnnwnwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+      // );
       final response = await _apiService.postRequest(
         endpoint,
         data,
@@ -53,10 +55,10 @@ class CallController extends GetxController {
       );
       print(data);
       if (response.isOk) {
-        print("🔰🔰🔰🔰🔰🔰🔰🔰🔰🔰🔰🔰🔰🔰🔰🔰🔰🔰🔰${response.body}");
+        // print("🔰🔰🔰🔰🔰🔰🔰🔰🔰🔰🔰🔰🔰🔰🔰🔰🔰🔰🔰${response.body}");
         callId = response.body['callId'];
       } else {
-        print(response.body);
+        // print(response.body);
       }
     } catch (e) {
       print(e);
@@ -94,13 +96,13 @@ class CallController extends GetxController {
         bearerToken: jwsToken,
       );
       if (response.isOk) {
-        print(response.body);
-        print("call ended");
+        // print(response.body);
+        // print("call ended");
       } else {
-        print(response.body);
+        // print(response.body);
       }
     } catch (e) {
-      print(e);
+      // print(e);
       rethrow;
     }
   }
