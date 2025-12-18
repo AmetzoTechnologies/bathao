@@ -604,9 +604,9 @@ class _CallHistoryPageState extends State<CallHistoryPage> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Color(0xFFB7C0EF),
-          Color(0xff8fb3dc),
-            Color(0xFF9BA4CC),
+            Color(0xFF494D7C),
+          Color(0xff5787b8),
+            Color(0xFF596BC3),
 
           ],
           begin: Alignment.topCenter,
